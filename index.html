@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ANAM145 Audit — AI-augmented Smart Contract Security</title>
-  <meta name="description" content="AI-augmented smart contract audits: our AI reads every path for full coverage and reproducible findings, and expert auditors make the final call. Born from Korea University · Cyber Defense.">
+  <title>AttackTrail by ANAM145 — Security Readiness Review</title>
+  <meta name="description" content="AttackTrail reviews the code and configuration of digital-asset and financial systems, and states exactly what we examined and what we did not.">
   <meta name="theme-color" content="#050607">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="ANAM145 Audit — AI-augmented Smart Contract Security">
-  <meta property="og:description" content="Full-coverage AI analysis, human sign-off. Global-grade smart contract audits, accelerated by AI.">
+  <meta property="og:title" content="AttackTrail by ANAM145 — Security Readiness Review">
+  <meta property="og:description" content="We find what matters most in web, cloud, blockchain and digital-asset systems — and tell you what to fix first. If we cannot reproduce it, we do not report it. If we did not examine it, we say so.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -16,52 +16,55 @@
 
 <div class="aa">
 
-  <!-- NAV -->
+  <!-- ══ NAV ══ -->
   <nav class="nav">
     <div class="wrap">
-      <a class="brand" href="#top" aria-label="ANAM145 Audit home">
+      <a class="brand" href="#top" aria-label="AttackTrail home">
         <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
           <path d="M13 1.5 23.5 7v12L13 24.5 2.5 19V7L13 1.5Z" stroke="currentColor" stroke-width="1.6"/>
           <path d="M13 6.5 18.5 9.6v6.8L13 19.5 7.5 16.4V9.6L13 6.5Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
         </svg>
-        ANAM145 <span class="sub">/ AUDIT</span>
+        <span class="wm">Attack<i>Trail</i></span><span class="sub">/ ANAM145</span>
       </a>
       <div class="links">
-        <a href="#why">Why now</a>
-        <a href="#process">How AI works</a>
-        <a href="#split">AI × Human</a>
-        <a href="#evidence">Evidence</a>
-        <a href="#scope">Coverage</a>
+        <a href="#threat">Why</a>
+        <a href="#how">How it works</a>
+        <a href="#coverage">Coverage</a>
+        <a href="#stages">Stages</a>
         <a href="#faq">FAQ</a>
       </div>
-      <a class="btn btn-primary" href="#contact">Request an Audit</a>
+      <a class="btn btn-primary" href="#contact">Request a review</a>
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ══ HERO ══ -->
   <header class="hero" id="top">
     <div class="wrap">
       <div>
-        <p class="eyebrow">AI-augmented smart contract security</p>
-        <h1>Global-grade smart contract audits, <span>accelerated by AI.</span></h1>
+        <p class="eyebrow">Security readiness review &amp; vulnerability assessment</p>
+        <h1>Find what matters most. <span>Before it ships — and after it changes.</span></h1>
         <p class="lead" style="margin-top:20px">
-          Our AI reads every path in your contracts — full coverage, at machine speed.
-          Then expert auditors decide what's real. Nothing ships on the model's word alone.
+          AttackTrail reviews the code and configuration of digital-asset and financial systems.
+          We identify the risks that matter most, and we state exactly what we examined and what we did not.
         </p>
+        <div class="rules">
+          <div class="r"><b>If we cannot reproduce it,</b> we do not report it.</div>
+          <div class="r"><b>If we did not examine it,</b> we say so.</div>
+        </div>
         <div class="cta">
-          <a class="btn btn-primary" href="#contact">Request an Audit →</a>
-          <a class="btn btn-ghost" href="#process">See how it works</a>
+          <a class="btn btn-primary" href="#contact">Request a review →</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
         </div>
         <div class="roots">
-          <b>Born from</b> Korea University · Cyber Defense
+          <b>Built by</b> Ministry of National Defense × Korea University cyber-defense researchers
           <span class="dotsep"></span>
-          Productized by ANAM145
+          ANAM145 Inc. · Busan, Korea
         </div>
       </div>
 
       <!-- scan panel -->
       <div class="scan" aria-hidden="true">
-        <div class="bar"><i></i><i></i><i></i><span class="t">Vault.sol — AI coverage pass</span></div>
+        <div class="bar"><i></i><i></i><i></i><span class="t">Vault.sol — review pass</span></div>
         <div class="body">
           <div class="scanline"></div>
           <div class="ln"><span class="n">41</span><span class="c"><span class="kw">function</span> claim(uint256 id) external {</span></div>
@@ -75,268 +78,540 @@
             <span class="tag sev high">STALE ORACLE</span></span></div>
           <div class="ln"><span class="n">48</span><span class="c">  require(price > 0);</span></div>
         </div>
-        <div class="foot"><span>147 / 147 paths</span><span><b>2 findings</b> · queued for human triage</span></div>
+        <div class="foot"><span>2 findings confirmed</span><span><b>PoC attached</b> · reproduced locally</span></div>
       </div>
     </div>
   </header>
 
-  <!-- WHY -->
-  <section id="why">
+  <!-- ══ THREAT ══ -->
+  <section id="threat">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Why now</p>
-        <h2>Contracts are multiplying. Senior auditors aren't.</h2>
-        <p class="lead" style="margin-top:16px">
-          Deployment volume keeps climbing while deep-review capacity hasn't kept pace and audit windows shrink.
-          That gap is measured in coverage, cost, and time — and it's exactly where AI earns its place,
-          without ever replacing human judgment.
-        </p>
+        <p class="eyebrow">Why we build this</p>
+        <h2>Attacks have moved past the smart contract.</h2>
       </div>
-      <div class="grid g3">
-        <div class="card"><h3>The coverage gap</h3><p>Manual review samples the risky paths it has time for. Machine analysis attempts all of them — so the long tail stops hiding.</p></div>
-        <div class="card"><h3>The speed gap</h3><p>First-pass triage that took days drops to hours, moving experts to the hard problems sooner within a fixed engagement.</p></div>
-        <div class="card"><h3>The trust gap</h3><p>The real blocker isn't capacity — it's "can I trust an AI audit?" We answer it with transparency, PoCs, and a human sign-off.</p></div>
+
+      <div class="stats one">
+        <div class="s">
+          <div class="v">$1.5B</div>
+          <div class="k">Bybit, February 2025. The largest crypto theft on record.
+            It did not start with a bug in the audited contract.
+            <b>It started with a developer's laptop.</b></div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:26px">
+        <div class="c">
+          <h3>A report certifies a commit, not a system</h3>
+          <p>A conventional audit certifies code as it existed on one day. Upgrade a proxy or redeploy a
+          service, and that report describes code which no longer runs. Almost no one tells the customer this.</p>
+        </div>
+        <div class="c">
+          <h3>Most reports do not say what they skipped</h3>
+          <p>A list of findings looks like coverage. It is not. Without an explicit statement of scope and
+          method, you cannot tell "this system is sound" from "we did not look there."</p>
+        </div>
+      </div>
+
+      <div class="boundary">
+        <h3>Where our line is</h3>
+        <p>The pattern is consistent. Attackers increasingly target
+        <b>infrastructure, deployment pipelines and operator environments, methods that bypass traditional
+        code audits.</b> We are precise about which part of that is ours.</p>
+        <p><b>Endpoint and signing-environment compromise is not what AttackTrail stops.</b>
+        That is what ANAM145 <a href="#roots">SignTrail</a> is built for. AttackTrail covers what is in the
+        code and the configuration — a missing permission check, a drainable withdrawal path, and above all
+        <b>an upgrade that quietly breaks the rules the first review relied on.</b></p>
+        <p class="dis">We do not claim AttackTrail would have prevented any specific incident.
+        The figure above is drawn from published reporting on the February 2025 Bybit incident.</p>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
-  <section id="process">
+  <!-- ══ HOW ══ -->
+  <section id="how">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">Transparent by design — AI ≠ black box</p>
-        <h2>Where the AI actually sits in the audit</h2>
-        <p class="lead" style="margin-top:16px">A real, ordered pipeline. You can see exactly which stage is a machine and which is a person.</p>
+        <p class="eyebrow">How it works</p>
+        <h2>Machine breadth. Human judgment.</h2>
+        <p class="lead" style="margin-top:16px">Automation attempts every path. Two named people decide what is real.</p>
       </div>
-      <div class="steps">
-        <div class="step">
-          <span class="num">01</span>
-          <div><h3>Map</h3><p>The AI ingests the codebase, builds the call graph, and models state and value flow across the whole system.</p></div>
-          <span class="who ai">AI</span>
+
+      <div class="flow">
+        <div class="fbox">
+          <span class="n">STEP 01</span>
+          <h3>Automated scan</h3>
+          <p>AI and static analysis across the whole codebase, so the long tail of known vulnerability
+          classes is attempted rather than sampled.</p>
         </div>
-        <div class="step">
-          <span class="num">02</span>
-          <div><h3>Scan every path</h3><p>Each path is checked against known vulnerability classes and invariant violations. Full breadth, no sampling.</p></div>
-          <span class="who ai">AI</span>
+        <div class="fbox">
+          <span class="n">STEP 02</span>
+          <h3>Expert triage</h3>
+          <p>A specialist removes false positives and rates real business impact. Nothing reaches the
+          report unreviewed.</p>
         </div>
-        <div class="step">
-          <span class="num">03</span>
-          <div><h3>Triage &amp; decide</h3><p>Auditors review candidates, discard noise, and decide what is actually exploitable. The model proposes; people dispose.</p></div>
-          <span class="who human">Human</span>
+        <div class="fbox gate">
+          <span class="n">STEP 03</span>
+          <h3>Approver sign-off</h3>
+          <p>A second named expert re-checks every finding before the report is released.</p>
         </div>
-        <div class="step">
-          <span class="num">04</span>
-          <div><h3>Reproduce with PoC</h3><p>Every confirmed issue becomes a runnable proof-of-concept. If it can't be reproduced, it isn't reported. No hallucinations.</p></div>
-          <span class="who human">Human + AI</span>
-        </div>
-        <div class="step">
-          <span class="num">05</span>
-          <div><h3>Report &amp; re-audit</h3><p>Severity-ranked findings, concrete patch guidance, and a fix-verification re-audit before you ship.</p></div>
-          <span class="who human">Human</span>
-        </div>
+      </div>
+
+      <div class="rule">
+        <b>The reviewer is never the approver.</b> If you review your own judgment, nothing catches the
+        error "I saw it, and I judged it harmless." This separation holds on every engagement, and both
+        names appear on the report.
       </div>
     </div>
   </section>
 
-  <!-- SPLIT -->
-  <section id="split">
+  <!-- ══ COVERAGE ══ -->
+  <section id="coverage">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">The line we don't cross</p>
-        <h2>What the machine does — and what only a human should</h2>
+        <p class="eyebrow">What we assess</p>
+        <h2>What is available today — and what is not</h2>
       </div>
-      <div class="split">
-        <div class="col ai">
-          <div class="h"><span class="pip">AI handles</span><span class="lbl">Breadth &amp; reproducibility</span></div>
-          <ul>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5 5.5 11 12 3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Full-path coverage</b> — every branch attempted, not just the obvious ones</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5 5.5 11 12 3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Known vulnerability patterns</b> — reentrancy, overflow, access control, oracle misuse</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5 5.5 11 12 3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Speed &amp; scale</b> — hours instead of days for the first pass</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7.5 5.5 11 12 3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Deterministic reproduction</b> — same input, same finding, every run</span></li>
-          </ul>
+
+      <div class="tscroll">
+        <table class="tiers cov">
+          <thead>
+            <tr>
+              <th scope="col">Domain</th>
+              <th scope="col">Focus areas</th>
+              <th scope="col" class="c">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tn">Smart contracts<span>EVM / SOLIDITY</span></td>
+              <td>Full manual review of access control, reentrancy, upgrade &amp; proxy safety, oracle
+                dependencies, token standards and fund-flow logic — <b>with a runnable proof-of-concept
+                per confirmed finding</b></td>
+              <td class="c"><span class="pill now">NOW</span><span class="plus">+ PoC</span></td>
+            </tr>
+            <tr>
+              <td class="tn">Digital asset flows<span>CUSTODY · SIGNING</span></td>
+              <td>Key custody model, signing and transaction-approval flow, wallet integration, settlement
+                path — including a threat model of the value-movement paths</td>
+              <td class="c"><span class="pill now">NOW</span></td>
+            </tr>
+            <tr>
+              <td class="tn">Web &amp; API<span>CONFIG &amp; CODE REVIEW</span></td>
+              <td>Dependency CVEs, authentication and authorization design, security headers, TLS, CORS,
+                secret exposure, OWASP-referenced code review of the reviewed paths</td>
+              <td class="c"><span class="pill now">NOW</span></td>
+            </tr>
+            <tr class="off">
+              <td class="tn">Web &amp; API<span>PENETRATION TESTING</span></td>
+              <td>Runtime exploitation, business-logic abuse discovery, chained attack paths</td>
+              <td class="c"><span class="pill later">STAGE 2</span></td>
+            </tr>
+            <tr class="off">
+              <td class="tn">Cloud configuration<span>IAM · STORAGE</span></td>
+              <td>IAM and privilege boundaries, storage exposure, network segmentation, secret handling</td>
+              <td class="c"><span class="pill later">STAGE 2</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="rule alt">
+        <b>Penetration testing and cloud auditing are a different discipline.</b> We open those in
+        Stage&nbsp;2 with a dedicated team. Stating it up front means the scope is settled before an
+        engagement begins — not renegotiated in the middle of one.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STAGES ══ -->
+  <section id="stages">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Where we are, and what comes next</p>
+        <h2>One service now. Two more as the team grows.</h2>
+      </div>
+
+      <div class="ladder">
+        <div class="stg on">
+          <span class="k">Stage 1 — available now</span>
+          <h3>Security Readiness Review</h3>
+          <p>Full manual review and <b>working proof-of-concept</b> for smart contracts. Threat modeling.
+          Configuration and code review for web and API.</p>
         </div>
-        <div class="col hu">
-          <div class="h"><span class="pip">Humans own</span><span class="lbl">Judgment &amp; sign-off</span></div>
-          <ul>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg><span><b>Economic &amp; incentive logic</b> — MEV, liquidation cascades, game-theoretic exploits</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg><span><b>Protocol-specific attack paths</b> — the novel bug no pattern library has seen</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg><span><b>Business-context severity</b> — what a finding really means for your users and funds</span></li>
-            <li><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/></svg><span><b>Final sign-off</b> — a named auditor stakes their reputation on the report</span></li>
-          </ul>
+        <div class="stg">
+          <span class="k">Stage 2</span>
+          <h3>Professional Security Audit</h3>
+          <p>Extends proof-backed depth to <b>web, API and cloud</b>: penetration testing against running
+          systems, attack-scenario reproduction, exploit chaining, larger scopes.</p>
+          <span class="w">2027 · as the specialist team is built</span>
+        </div>
+        <div class="stg">
+          <span class="k">Stage 3</span>
+          <h3>Continuous Verification</h3>
+          <p>Monitors deployed systems for change — proxy upgrades, bytecode changes, permission transfers
+          — and re-assesses whatever changed against the original review.</p>
+          <span class="w">2027 · with ANAM145 SignTrail</span>
         </div>
       </div>
-      <p class="split-note">We don't claim the AI decides. It <b>expands what a human auditor can see</b> — then a human decides. That boundary is the whole product.</p>
-    </div>
-  </section>
 
-  <!-- EVIDENCE -->
-  <section id="evidence">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Proof, not promises</p>
-        <h2>Measured, reproducible, honest about misses</h2>
-        <p class="lead" style="margin-top:16px">Trust in an AI audit is earned with findings you can run yourself — and honesty about what we miss.</p>
-      </div>
-
-      <div class="metrics">
-        <div class="m"><div class="v">Exhaustive coverage</div><div class="k">Every path attempted — not sampled</div></div>
-        <div class="m"><div class="v">Reproduced findings</div><div class="k">A runnable PoC gates every reported issue</div></div>
-        <div class="m"><div class="v">Human sign-off</div><div class="k">A named auditor stakes their name on it</div></div>
-      </div>
-
-      <div class="grid" style="margin-top:34px;gap:12px">
-        <div class="find"><span class="sev crit">CRITICAL</span><div class="txt"><b>Reentrancy in reward claim</b><span>External call before state update — PoC drains the reward pool in one tx.</span></div><span class="poc">PoC reproduced ✓</span></div>
-        <div class="find"><span class="sev high">HIGH</span><div class="txt"><b>Stale oracle round accepted</b><span>Missing round-id / timestamp freshness check enables price manipulation.</span></div><span class="poc">PoC reproduced ✓</span></div>
-        <div class="find"><span class="sev med">MEDIUM</span><div class="txt"><b>Unchecked return in batch transfer</b><span>Silent failure leaves accounting inconsistent under partial revert.</span></div><span class="poc">PoC reproduced ✓</span></div>
-      </div>
-
-      <div class="callout">
-        <div class="c"><h3>False positives — shown, not hidden</h3><p>Every machine candidate passes human triage and a PoC gate before it reaches you. You see confirmed, runnable issues — not a wall of maybes.</p></div>
-        <div class="c"><h3>What the AI can't catch</h3><p>Novel economic exploits, off-chain trust assumptions, and governance-process risks still need a human. We say so up front.</p></div>
+      <div class="boundary tight">
+        <p><b>Where the line is.</b> Smart-contract findings are proven by reproducing them in a local
+        environment. Web, cloud and API findings are identified by reading code and configuration, and are
+        reported as <b>risk indicators, not proven exploits</b> — so you can decide where to test further.
+        <b>No traffic is sent to a running client system.</b> No review certifies that a system is free of
+        vulnerabilities.</p>
       </div>
     </div>
   </section>
 
-  <!-- SCOPE -->
-  <section id="scope">
-    <div class="wrap">
-      <div class="sec-head">
-        <p class="eyebrow">Scope</p>
-        <h2>What we audit</h2>
-      </div>
-      <h3 style="margin-bottom:2px">Languages &amp; VMs</h3>
-      <div class="chips">
-        <span class="chip"><b>Solidity</b> — EVM</span>
-        <span class="chip"><b>Rust</b> — Solana / CosmWasm / ink!</span>
-        <span class="chip"><b>Move</b> — Aptos / Sui</span>
-        <span class="chip">Vyper</span>
-        <span class="chip">Yul / assembly</span>
-      </div>
-      <h3 style="margin:26px 0 2px">Protocol types</h3>
-      <div class="chips">
-        <span class="chip">DeFi &amp; AMMs</span>
-        <span class="chip">Cross-chain bridges</span>
-        <span class="chip">Staking &amp; restaking</span>
-        <span class="chip">Governance</span>
-        <span class="chip">Token standards</span>
-        <span class="chip">Account abstraction</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- DELIVERABLES -->
+  <!-- ══ DELIVERABLES ══ -->
   <section id="deliverables">
     <div class="wrap">
       <div class="sec-head">
-        <p class="eyebrow">What you get</p>
+        <p class="eyebrow">What you receive</p>
         <h2>Deliverables</h2>
       </div>
       <div class="deliv">
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="2" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M6 6h6M6 9h6M6 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><div><b>Severity-ranked report</b><span>Critical → Low, each with impact, location, and root cause.</span></div></div>
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9l3 3 7-7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Patch recommendations</b><span>Concrete, code-level fixes — not just "consider reviewing".</span></div></div>
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M6 4 3 9l3 5M12 4l3 5-3 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Reproducible PoCs</b><span>Runnable exploit scripts that prove each finding is real.</span></div></div>
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3a6 6 0 1 1-5.2 3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Fix-verification re-audit</b><span>We re-check your patches and confirm the issue is closed.</span></div></div>
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M6.5 10.5 5 16l4-2 4 2-1.5-5.5" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg><div><b>Public audit certificate</b><span>A verifiable badge and report link to show your users.</span></div></div>
-        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 3 5v4c0 3.5 2.6 6 6 7 3.4-1 6-3.5 6-7V5L9 2Z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg><div><b>Coverage manifest</b><span>Which high-risk paths the AI checked exhaustively, and where a human took a deeper manual pass.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="2" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M6 6h6M6 9h6M6 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><div><b>Executive summary</b><span>Risk posture at a glance, with an explicit readiness opinion.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9l3 3 7-7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Prioritized findings</b><span>Severity, location, impact, and concrete remediation steps.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M6 4 3 9l3 5M12 4l3 5-3 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Runnable proof-of-concept</b><span>For every confirmed smart-contract finding. A test you can run yourself.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 2 3 5v4c0 3.5 2.6 6 6 7 3.4-1 6-3.5 6-7V5L9 2Z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg><div><b>Coverage statement</b><span>What was reviewed, by which method, and what was excluded.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3a6 6 0 1 1-5.2 3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Fix-verification re-review</b><span>One pass within 30 days, to confirm the issue is closed.</span></div></div>
+        <div class="d"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M9 6v3l2 2" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg><div><b>Readout session</b><span>60 minutes with your engineering team. Reports in English or Korean.</span></div></div>
       </div>
     </div>
   </section>
 
-  <!-- ROOTS -->
+  <!-- ══ WHO ══ -->
+  <section id="who">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Who it is for</p>
+        <h2>Where AttackTrail fits</h2>
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <h3>Banks launching digital-asset services</h3>
+          <p>You integrate a custodian, expose new APIs, and add signing and settlement paths. We review
+          those boundaries, the permission model, and the code that moves value — and we state which paths
+          we examined and which we did not, so your risk function has something auditable rather than a
+          pass mark.</p>
+        </div>
+        <div class="card">
+          <h3>Wallets, exchanges and custody</h3>
+          <p>You sign withdrawals and on-chain transactions. We review the contract logic and the withdrawal
+          path before launch, with runnable proof for each confirmed finding — then re-assess whatever
+          changes after launch. That upgrade window is where storage collisions and silently broken
+          invariants appear.</p>
+        </div>
+        <div class="card">
+          <h3>Fintech and payment platforms</h3>
+          <p>Stablecoin rails and payment integrations depend on authentication, authorization and dependency
+          hygiene as much as on contract logic. We review dependencies, auth design, transport settings and
+          secret exposure — and we tell you what we did not cover, so the gap is a decision rather than an
+          assumption.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ROOTS ══ -->
   <section id="roots">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Where we come from</p>
         <h2>Institutional roots, offensive-security DNA</h2>
         <p class="lead" style="margin-top:16px">
-          ANAM145 was built by researchers trained in Korea University's Cyber Defense program —
-          the same offensive-security lineage behind Korea's top CTF and vulnerability-research talent.
-          We turned that expertise into an AI audit engine you can actually verify.
+          AttackTrail is built by researchers from the cyber-defense program that Korea's
+          <b>Ministry of National Defense established with Korea University</b> to counter North Korean
+          cyber operations. We read code from the attacker's side — and we write down where we stopped.
         </p>
       </div>
       <div class="rootsband">
-        <div class="badge"><span class="nm">Korea University</span><span class="kr">고려대학교</span><span class="underline"></span></div>
+        <div class="badge"><span class="nm">Ministry of National Defense</span><span class="kr">× Korea University</span><span class="underline"></span></div>
         <div class="badge"><span class="nm">Cyber Defense</span><span class="kr">사이버국방학과</span><span class="underline"></span></div>
-        <div class="badge accent"><span class="nm">ANAM145</span><span class="kr">Audit engine · product</span><span class="underline"></span></div>
+        <div class="badge accent"><span class="nm">ANAM145 Inc.</span><span class="kr">Busan, Republic of Korea</span><span class="underline"></span></div>
+      </div>
+
+      <div class="family">
+        <div class="f"><b>SignTrail</b><span>Transaction signing and execution security — verifies that a signing request came from a trusted execution path before it is approved.</span></div>
+        <div class="f"><b>AttackTrail</b><span>Security readiness review and vulnerability assessment — this service.</span></div>
+        <div class="f"><b>Anam Wallet / Cell</b><span>Digital-asset wallet and mini-app platform.</span></div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ══ FAQ ══ -->
   <section id="faq">
     <div class="wrap">
       <div class="sec-head">
         <p class="eyebrow">Objections, answered</p>
-        <h2>The questions institutional buyers actually ask</h2>
+        <h2>The questions buyers actually ask</h2>
       </div>
       <div class="faq">
         <details open>
-          <summary>Can I trust an AI audit? <span class="pl">+</span></summary>
-          <div class="ans">The AI never has the last word. It surfaces and reproduces candidates; a named human auditor triages every one, and only reproduced, human-confirmed findings reach your report. You're buying human judgment with machine reach — not a black box.</div>
+          <summary>Is this a penetration test? <span class="pl">+</span></summary>
+          <div class="ans">No, and we do not describe it as one. This is a review-based assessment: we read code and configuration. For smart contracts we go further and reproduce each confirmed finding locally, so you get working proof. Penetration testing against running systems is a different discipline and opens in Stage 2. If a live-system test is what you need, we will say so rather than sell you a review.</div>
+        </details>
+        <details>
+          <summary>Can I trust findings produced with AI? <span class="pl">+</span></summary>
+          <div class="ans">The AI never has the last word. It surfaces candidates with mandatory code citation; a specialist triages every one, and a second named expert approves the report. For smart contracts, a finding that cannot be reproduced does not ship. You are buying human judgment with machine reach — not a black box.</div>
         </details>
         <details>
           <summary>What about false positives? <span class="pl">+</span></summary>
-          <div class="ans">We don't hide them behind a dashboard. Two gates protect you before anything reaches your report: human triage removes noise, and a mandatory PoC means anything unreproducible is dropped. You see confirmed, runnable issues — not a wall of maybes.</div>
+          <div class="ans">Two gates protect you. Human triage removes noise before anything is written up, and for contract findings a mandatory proof-of-concept means anything unreproducible is dropped. Web and API findings are labelled as risk indicators rather than proven exploits, so you know which ones still need active testing to confirm.</div>
         </details>
         <details>
-          <summary>Does a working PoC mean it's exploitable in production? <span class="pl">+</span></summary>
-          <div class="ans">Not automatically — and we say so. A PoC proves the bug is real and reproducible; a human auditor then judges whether it's economically and operationally exploitable in your live environment, and grades severity accordingly. Reproducibility removes hallucinations; human judgment sets the real-world stakes.</div>
+          <summary>What if you miss something critical? <span class="pl">+</span></summary>
+          <div class="ans">No review — human or automated — can promise zero misses, and we will not pretend otherwise. What we give you is a written scope with explicit exclusions, a coverage statement showing exactly what was examined and by which method, and a fix-verification pass. You know precisely what we checked and what we did not.</div>
         </details>
         <details>
-          <summary>What if you miss a critical vulnerability? <span class="pl">+</span></summary>
-          <div class="ans">No audit — human or AI — can promise zero misses, and we won't pretend otherwise. What we give you is a written scope with explicit exclusions, a coverage manifest showing exactly what was reviewed, and a fix-verification re-audit. You know precisely what we checked and what we didn't.</div>
+          <summary>Do you need access to our production systems? <span class="pl">+</span></summary>
+          <div class="ans">No. Source code and documentation are sufficient, and no traffic is sent to a running system. That is a deliberate property of a review-based service: you can evaluate us without operational risk. Any active testing would require separate written authorization, and that belongs to Stage 2.</div>
         </details>
         <details>
-          <summary>What can the AI <em>not</em> catch? <span class="pl">+</span></summary>
-          <div class="ans">Novel economic and incentive exploits, off-chain trust assumptions, and governance-process risk still depend on human auditors. We state the limits explicitly in every engagement — honesty about misses is part of the trust.</div>
+          <summary>How do you scope and price an engagement? <span class="pl">+</span></summary>
+          <div class="ans">From measured code size, using logic lines only — no comments, blanks, imports, tests or library source — normalized so that reformatting your code never changes the number. We then weight the parts that genuinely take longer: interface-only files count less, upgrade paths and novel math count more, inline assembly most of all. You receive the per-file measurement table, the tool version, and the command to reproduce the count yourself.</div>
         </details>
         <details>
-          <summary>Do humans still do the audit? <span class="pl">+</span></summary>
-          <div class="ans">Yes. AI is leverage, not a replacement. It expands coverage and speed so our auditors spend their time on the hard, protocol-specific problems — and a person signs the final report.</div>
+          <summary>What happens after we deploy? <span class="pl">+</span></summary>
+          <div class="ans">This is the gap almost nobody covers. An audit certifies a commit; the moment you upgrade a proxy, the report describes code that no longer runs. Stage 3 monitors the deployed system for change — upgrade events, bytecode changes, permission transfers — and re-assesses whatever changed against the original review, integrated with ANAM145 SignTrail.</div>
         </details>
         <details>
-          <summary>Which models and tools do you use? <span class="pl">+</span></summary>
-          <div class="ans">Engagements include a methodology appendix: the analysis techniques, tooling, and model roles used on your codebase. Institutional buyers don't buy black boxes, so we don't ship one.</div>
+          <summary>Which tools and models do you use? <span class="pl">+</span></summary>
+          <div class="ans">Every engagement includes a methodology appendix naming the analysis techniques, tool versions and model roles applied to your codebase. Institutional buyers do not buy black boxes, so we do not ship one.</div>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- FINAL CTA -->
+  <!-- ══ CONTACT ══ -->
   <section class="final" id="contact">
     <div class="wrap">
       <p class="eyebrow" style="display:inline-block">Ready when you are</p>
-      <h2>See every path in your contracts.</h2>
+      <h2>Request a review.</h2>
       <p class="lead" style="margin:16px auto 0">
-        Send us your repository or scope. You'll get a coverage estimate, timeline, and a sample of AI-surfaced,
-        human-verified findings — before you commit.
+        Tell us what you want examined. You will get a scope estimate, a timeline, and a clear statement
+        of what falls outside it — before you commit.
+        Fields marked <span style="color:var(--crimson)">*</span> are required.
       </p>
-      <div class="cta">
-        <a class="btn btn-primary" href="mailto:audit@anam145.io">Request an Audit →</a>
-        <a class="btn btn-ghost" href="#process">Review the methodology</a>
-      </div>
-      <p class="mail">or email <a href="mailto:audit@anam145.io">audit@anam145.io</a></p>
+
+      <form id="audit-form" class="form-shell" action="https://formspree.io/f/xqpzgoda" method="POST" novalidate>
+        <input type="hidden" name="_subject" value="New review request — AttackTrail">
+        <div class="hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="fs-title first">Who you are</div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="f-name">Full name <span class="req">*</span></label>
+            <input id="f-name" name="Full name" type="text" required placeholder="Jane Doe" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="f-email">Work email <span class="req">*</span></label>
+            <input id="f-email" name="email" type="email" required placeholder="jane@yourorg.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="f-org">Organization <span class="req">*</span></label>
+            <input id="f-org" name="Organization" type="text" required placeholder="Acme Bank · Acme Protocol" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="f-orgtype">Organization type <span class="req">*</span></label>
+            <select id="f-orgtype" name="Organization type" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Bank or financial institution</option>
+              <option>Fintech or payment provider</option>
+              <option>Exchange, wallet or custody</option>
+              <option>Blockchain project</option>
+              <option>Government or public institution</option>
+              <option>University or research lab</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-country">Country <span class="hint">(optional)</span></label>
+            <input id="f-country" name="Country" type="text" placeholder="Peru · Korea · …">
+          </div>
+          <div class="field">
+            <label for="f-role">Your role <span class="hint">(optional)</span></label>
+            <input id="f-role" name="Role" type="text" placeholder="CTO · Security lead · Engineer">
+          </div>
+        </div>
+
+        <div class="fs-title">What you want examined</div>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="f-service">What do you need? <span class="req">*</span></label>
+            <select id="f-service" name="Service needed" required>
+              <option value="" disabled selected>Select…</option>
+              <option>Security readiness review — first review of this system</option>
+              <option>Re-review — code changed since a previous review</option>
+              <option>Not sure — advise me</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-project">Project or system name <span class="req">*</span></label>
+            <input id="f-project" name="Project name" type="text" required placeholder="Acme Custody v2">
+          </div>
+          <div class="field">
+            <label for="f-website">Website <span class="hint">(optional)</span></label>
+            <input id="f-website" name="Website" type="url" placeholder="https://…">
+          </div>
+          <div class="field full">
+            <label>What is in scope? <span class="hint">(select all that apply)</span></label>
+            <div class="checks">
+              <label><input type="checkbox" name="Scope" value="Smart contracts">Smart contracts · EVM</label>
+              <label><input type="checkbox" name="Scope" value="Digital asset flows">Custody &amp; signing flow</label>
+              <label><input type="checkbox" name="Scope" value="Web application">Web application</label>
+              <label><input type="checkbox" name="Scope" value="API">API</label>
+              <label><input type="checkbox" name="Scope" value="Not sure">Not sure yet</label>
+            </div>
+            <span class="hint">Penetration testing and cloud configuration auditing are Stage 2 and not currently offered.</span>
+          </div>
+          <div class="field full">
+            <label for="f-repo">Code repository <span class="hint">(optional at this stage)</span></label>
+            <input id="f-repo" name="Repository" type="text" placeholder="https://github.com/org/repo">
+            <span class="hint">Private is fine — we arrange access under NDA. No production access required.</span>
+          </div>
+          <div class="field">
+            <label for="f-upgrade">Upgradeable? <span class="req">*</span></label>
+            <select id="f-upgrade" name="Upgradeability" required>
+              <option value="" disabled selected>Select…</option>
+              <option>No — immutable once deployed</option>
+              <option>Yes — proxy (UUPS)</option>
+              <option>Yes — proxy (Transparent)</option>
+              <option>Yes — proxy (Beacon / Diamond)</option>
+              <option>Yes — other mechanism</option>
+              <option>Not applicable / not sure</option>
+            </select>
+            <span class="hint">Drives storage-layout review and re-review scope.</span>
+          </div>
+          <div class="field">
+            <label for="f-deploy">Deployment status</label>
+            <select id="f-deploy" name="Deployment status">
+              <option value="" disabled selected>Select…</option>
+              <option>Not deployed / pre-launch</option>
+              <option>Testnet or staging</option>
+              <option>Live with funds or real users</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-start">Desired start date</label>
+            <input id="f-start" name="Desired start" type="date">
+          </div>
+          <div class="field">
+            <label for="f-deadline">Hard deadline <span class="hint">(if any)</span></label>
+            <input id="f-deadline" name="Deadline" type="text" placeholder="e.g. launch 2026-11">
+          </div>
+          <div class="field full">
+            <label for="f-notes">Anything else? <span class="hint">(areas of concern, known issues, scope boundaries…)</span></label>
+            <textarea id="f-notes" name="Notes" placeholder="What worries you most, and any context that helps us scope accurately."></textarea>
+          </div>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" name="NDA requested" value="Yes">
+          <span>We will need an NDA in place before code is shared.</span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" name="Consent" value="Agreed" required>
+          <span>I agree that ANAM145 may store and use the information above to respond to this request. <span class="req">*</span></span>
+        </label>
+
+        <div class="form-actions">
+          <button id="form-submit" class="btn btn-primary" type="submit">Send request →</button>
+          <span class="form-note">or email <a href="mailto:dev@anam145.com">dev@anam145.com</a></span>
+        </div>
+        <div id="form-status" class="form-status" role="status" tabindex="-1"></div>
+      </form>
     </div>
   </section>
 
+  <!-- ══ FOOTER ══ -->
   <footer>
     <div class="wrap">
       <div>
-        <div class="brand" style="margin-bottom:8px">ANAM145 <span class="sub">/ AUDIT</span></div>
-        <div class="roots" style="color:var(--faint)"><b>Born from</b> Korea University · Cyber Defense <span class="dotsep"></span> © 2026 ANAM145</div>
+        <div class="brand" style="margin-bottom:8px"><span class="wm">Attack<i>Trail</i></span><span class="sub">/ ANAM145</span></div>
+        <div class="legal">
+          <b>ANAM145 Inc.</b> · CEO Junghee Lee, Junsik Sim · Business Reg. 140-86-02988<br>
+          7F, 365 Jungang-daero, Dong-gu, Busan, Republic of Korea<br>
+          Contact <b>Dongwook Jeong</b> · dev@anam145.com
+        </div>
       </div>
       <div class="fl">
-        <a href="#why">Why now</a>
-        <a href="#process">Process</a>
-        <a href="#split">AI × Human</a>
-        <a href="#evidence">Evidence</a>
+        <a href="#threat">Why</a>
+        <a href="#how">How it works</a>
+        <a href="#coverage">Coverage</a>
+        <a href="#stages">Stages</a>
         <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
+      </div>
+      <div class="disc">
+        Service overview. Engagement terms are set out in individual proposals and contracts.
+        No review certifies that a system is free of vulnerabilities.<br>
+        © 2026 ANAM145 Inc.
       </div>
     </div>
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var form = document.getElementById('audit-form');
+    if (!form) return;
+    var status = document.getElementById('form-status');
+    var btn = document.getElementById('form-submit');
+
+    function show(kind, msg) {
+      status.textContent = msg;
+      status.className = 'form-status show ' + kind;
+      status.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // role="status" 라이브 영역이라 focus 하면 두 번 읽힌다. 스크롤만 맡긴다.
+    }
+
+    form.addEventListener('submit', function (e) {
+      // fetch 가 없으면 가로채지 않는다. 브라우저가 그대로 POST 하게 둔다.
+      if (typeof window.fetch !== 'function') return;
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      var action = form.getAttribute('action') || '';
+
+      var label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      fetch(action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      })
+        .then(function (res) {
+          if (res.ok) {
+            form.reset();
+            show('ok', 'Thank you — your request is in. We will reply to the email you gave us within 2 business days.');
+            return;
+          }
+          // 429·5xx 는 HTML 을 돌려준다. 파싱 실패를 네트워크 오류로 보고하지 않는다.
+          return res.json().catch(function () { return null; }).then(function (d) {
+            var msg = d && d.errors && d.errors.length
+              ? d.errors.map(function (x) { return x.message; }).join(', ')
+              : 'The form could not accept your request (HTTP ' + res.status +
+                '). Please email dev@anam145.com instead.';
+            show('err', msg);
+          });
+        })
+        .catch(function () {
+          show('err', 'Network error — please email dev@anam145.com instead.');
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = label;
+        });
+    });
+  })();
+</script>
 
 </body>
 </html>
