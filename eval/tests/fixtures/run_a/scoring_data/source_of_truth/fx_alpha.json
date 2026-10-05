@@ -1,0 +1,40 @@
+{
+  "project_id": "fx_alpha",
+  "name": "fixture alpha",
+  "platform": "fixture",
+  "codebases": [
+    {
+      "codebase_id": "fx",
+      "repo_url": "https://example.invalid/fx.git",
+      "commit": "0000000000000000000000000000000000000000",
+      "tree_url": "",
+      "tarball_url": ""
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "finding_id": "FX-1",
+      "severity": "high",
+      "title": "Fixture truth one",
+      "description": "Fixture truth one full description text."
+    },
+    {
+      "finding_id": "FX-2",
+      "severity": "high",
+      "title": "Fixture truth two",
+      "description": "Fixture truth two full description text."
+    },
+    {
+      "finding_id": "FX-3",
+      "severity": "medium",
+      "title": "Fixture truth three",
+      "description": "Fixture truth three full description text."
+    },
+    {
+      "finding_id": "FX-4",
+      "severity": "low",
+      "title": "Fixture truth four",
+      "description": "Fixture truth four full description text."
+    }
+  ]
+}

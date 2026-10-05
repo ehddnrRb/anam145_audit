@@ -1,0 +1,85 @@
+{
+  "synthetic_fixture": true,
+  "_note": "SYNTHETIC FIXTURE for report tests. Not a measurement.",
+  "run_id": "run_b",
+  "started_at": "2026-01-01T00:00:00Z",
+  "finished_at": "2026-01-01T00:10:00Z",
+  "cli_argv": [
+    "run",
+    "--agent",
+    "baseline",
+    "--dataset",
+    "scabench"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "datasets/scabench/datasets/curated-2025-08-18/curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "baseline",
+    "version": "bbbbbbb",
+    "model": "fixture-model",
+    "prompt_hash": "fixturehashrun_b"
+  },
+  "judge": {
+    "kind": "nethermind",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "o4-mini",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "fixture",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "fx_alpha",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok"
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "n_findings": 3
+    },
+    {
+      "project_id": "fx_beta",
+      "excluded_reason": "pinned_commit_missing",
+      "checkout": null,
+      "agent_status": null,
+      "agent_error": null,
+      "wall_seconds": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "n_findings": null
+    },
+    {
+      "project_id": "fx_gamma",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "clone_failed",
+        "error": "synthetic fixture failure"
+      },
+      "agent_status": null,
+      "agent_error": null,
+      "wall_seconds": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "n_findings": null
+    }
+  ],
+  "denominators_note": "metrics exclude excluded, checkout-failed and crashed projects"
+}

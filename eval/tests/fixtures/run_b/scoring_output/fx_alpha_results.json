@@ -1,0 +1,52 @@
+[
+  {
+    "is_match": false,
+    "is_partial_match": false,
+    "explanation": "synthetic fixture verdict",
+    "severity_from_junior_auditor": "N/A",
+    "severity_from_truth": "High",
+    "index_of_finding_from_junior_auditor": -1,
+    "is_fp": false,
+    "finding_description_from_junior_auditor": "NOT FOUND"
+  },
+  {
+    "is_match": true,
+    "is_partial_match": false,
+    "explanation": "synthetic fixture verdict",
+    "severity_from_junior_auditor": "High",
+    "severity_from_truth": "High",
+    "index_of_finding_from_junior_auditor": 0,
+    "is_fp": false,
+    "finding_description_from_junior_auditor": "B finding zero synthetic agent description."
+  },
+  {
+    "is_match": true,
+    "is_partial_match": false,
+    "explanation": "synthetic fixture verdict",
+    "severity_from_junior_auditor": "Medium",
+    "severity_from_truth": "Medium",
+    "index_of_finding_from_junior_auditor": 1,
+    "is_fp": false,
+    "finding_description_from_junior_auditor": "B finding one synthetic agent description."
+  },
+  {
+    "is_match": false,
+    "is_partial_match": false,
+    "explanation": "synthetic fixture verdict",
+    "severity_from_junior_auditor": "N/A",
+    "severity_from_truth": "Low",
+    "index_of_finding_from_junior_auditor": -1,
+    "is_fp": false,
+    "finding_description_from_junior_auditor": "NOT FOUND"
+  },
+  {
+    "is_match": false,
+    "is_partial_match": false,
+    "explanation": "synthetic fixture verdict",
+    "severity_from_junior_auditor": "High",
+    "severity_from_truth": "N/A",
+    "index_of_finding_from_junior_auditor": 2,
+    "is_fp": true,
+    "finding_description_from_junior_auditor": "B finding two synthetic agent description."
+  }
+]

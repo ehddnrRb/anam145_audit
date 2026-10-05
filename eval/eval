@@ -1,0 +1,12 @@
+#!/bin/sh
+# eval/ 에서 ./eval run ... 로 쓴다. venv 파이썬을 찾아 cli.py 로 넘긴다.
+here=$(cd "$(dirname "$0")" && pwd)
+if [ -x "$here/.venv/bin/python" ]; then
+  py="$here/.venv/bin/python"
+elif [ -x "$here/.venv/Scripts/python.exe" ]; then
+  py="$here/.venv/Scripts/python.exe"
+else
+  echo "eval/.venv 가 없다. README 의 설치 절차를 먼저 따른다." >&2
+  exit 1
+fi
+PYTHONIOENCODING=utf-8 exec "$py" "$here/cli.py" "$@"
