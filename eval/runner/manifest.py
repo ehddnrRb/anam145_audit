@@ -14,9 +14,12 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 DENOMINATORS_NOTE = (
     "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. "
     "Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents "
-    "are listed in projects[] with their reason and are not counted."
+    "are listed in projects[] with their reason and are not counted. "
+    "Projects with agent_status no_files (the scanner found no file in its supported languages) are not counted "
+    "either, but they are a tool limit, not a failure: their truths and the Recall with those truths counted as "
+    "misses are in `unsupported` (here and in scores.json)."
 )
-_SECRET_ENV = ("OPENAI_API_KEY", "ANTHROPIC_API_KEY")
+_SECRET_ENV = ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "ATTACKTRAIL_ANTHROPIC_API_KEY")
 _SECRET_PAT = re.compile(r"sk-(ant-)?[A-Za-z0-9_-]{16,}")
 _FORBIDDEN_KEYS = {"env", "environ", "environment", "api_key", "openai_api_key", "anthropic_api_key"}
 

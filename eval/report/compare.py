@@ -76,9 +76,37 @@ def _comparability(ma: dict, sa: dict, mb: dict, sb: dict) -> list[str]:
     return warns
 
 
+AGENT_KEYS = ("model", "effort", "max_tokens", "call_shape")  # what the agent was told; prompt_sha256 cannot show these (D-28)
+
+
+def _agent_diff(ma: dict, mb: dict) -> list[str]:
+    """One warning per setting in AGENT_KEYS that differs between the two manifests' `agent` blocks.
+
+    A repeat run's own manifest carries rep-1's agent block (runner._aggregate), so the aggregate manifest is read as it is. A
+    side that never recorded a key (a manifest from before D-28 has no max_tokens) shows as 미기록: unknown is not equal. So a
+    key neither side recorded is a warning too, in the short form "agent.<key>: 양쪽 미기록" (nothing shows the two were set alike)."""
+    aa, ab = (m.get("agent") if isinstance(m.get("agent"), dict) else {} for m in (ma, mb))
+    show = lambda v: "미기록" if v is None else v  # noqa: E731
+    out = []
+    for k in AGENT_KEYS:
+        a, b = aa.get(k), ab.get(k)
+        if a is None and b is None:
+            out.append(f"agent.{k}: 양쪽 미기록")
+        elif a != b:
+            out.append(f"agent.{k} differs: A={show(a)} B={show(b)}")
+    return out
+
+
 def _rep_scores(run_dir: Path, scores: dict) -> list[dict]:
     reps = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(Path(run_dir).glob("rep-*/scores.json"))]
     return reps or [scores]
+
+
+def _no_files(run_dir: Path, manifest: dict) -> set[str]:
+    """Projects the agent could not scan at all (agent_status no_files, D-27); every rep of a repeat run counts."""
+    mans = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(Path(run_dir).glob("rep-*/manifest.json"))]
+    return {p.get("project_id") for m in mans or [manifest] for p in m.get("projects") or []
+            if p.get("agent_status") == "no_files"}
 
 
 def _scored(reps: list[dict]) -> set[str]:
@@ -133,7 +161,7 @@ def compare(run_a: Path, run_b: Path) -> str:
     lines = [f"# Compare {run_a.name} -> {run_b.name}", ""]
     if ka == "mock":
         lines += ["> **MOCK JUDGE on both sides — numbers are meaningless (plumbing test)**", ""]
-    warns = _comparability(ma, sa, mb, sb)
+    warns = _comparability(ma, sa, mb, sb) + _agent_diff(ma, mb)
     ra, rb = _rep_scores(run_a, sa), _rep_scores(run_b, sb)
     pa_set, pb_set = _scored(ra), _scored(rb)
     common_pids = pa_set & pb_set
@@ -141,6 +169,11 @@ def compare(run_a: Path, run_b: Path) -> str:
         warns.append(f"scored project sets differ (only A: {sorted(pa_set - pb_set) or '-'}; "
                      f"only B: {sorted(pb_set - pa_set) or '-'}). Headline deltas average different projects; "
                      "use the common-projects table")
+    nfa, nfb = _no_files(run_a, ma), _no_files(run_b, mb)
+    if nfa != nfb:
+        warns.append(f"no_files project sets differ (only A: {sorted(nfa - nfb) or '-'}; only B: {sorted(nfb - nfa) or '-'}). "
+                     "The scanner found no file to scan there (a tool limit, not a crash). A no_files project is outside "
+                     "that run's Recall denominator, so the two sides count different truths")
     for w in warns:
         lines.append(f"> **WARNING: {w}. Deltas may not be comparable.**")
     if warns:

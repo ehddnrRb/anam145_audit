@@ -161,10 +161,15 @@ def _is_high(t: dict) -> bool:
 
 
 def evaluate(run_dir: Path, scan_source: str, project_ids: list[str], judge: str = "nethermind",
-             model: str = "o4-mini", batch_size: int = 10) -> ScoreResult:
+             model: str = "o4-mini", batch_size: int = 10, only_missing: bool = False) -> ScoreResult:
+    """only_missing: judge only projects without scoring_output/<id>_results.json (rescore after a crash);
+    stats are still computed for every project id."""
     run_dir = Path(run_dir).resolve()
     data_root = run_dir / "scoring_data"
     output_root = run_dir / "scoring_output"
+    all_ids = project_ids
+    if only_missing:
+        project_ids = [p for p in project_ids if not (output_root / f"{p}_results.json").exists()]
 
     if judge == "nethermind":
         key = os.environ.get("OPENAI_API_KEY")
@@ -185,7 +190,7 @@ def evaluate(run_dir: Path, scan_source: str, project_ids: list[str], judge: str
 
     per_project: dict[str, dict] = {}
     stats, fn, fp, info = [], [], [], []
-    for pid in project_ids:
+    for pid in all_ids:
         eval_path = get_evaluation_path(pid, output_root)
         if not eval_path.exists():
             raise RuntimeError(f"scorer wrote no evaluation for {pid}: {eval_path}")
