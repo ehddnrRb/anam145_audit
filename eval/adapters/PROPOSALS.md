@@ -31,6 +31,8 @@ diff 원문은 `internal/eval/scan-p1.diff` 에 있다. 문맥 줄에 scan.py �
 
 ## 하네스 쪽에서 알아둘 scan.py 특성 (변경 제안 아님, 기록)
 
+- 갱신(2026-10-19, DECISIONS D-19): 아래 세 줄은 이제 사실이 아니다. 토큰은 `_usage` 행으로 기록돼 어댑터가 `tokens_in`·`tokens_out` 을 채운다(`cost_usd` 만 `None`). 파일별 실패는 진행 줄 정규식으로 센다(`]  ERROR ` 검사는 한 번도 맞지 않았다). `--out` 이 생겨 어댑터가 `raw/scan.jsonl` 에 직접 쓰게 한다. 옛 서술을 남긴다.
+- 갱신(2026-10-20, DECISIONS D-20): scan.py 에 하드 데드라인 `--deadline-s`(호출별 timeout·재시도, 매달린 호출을 버리고 종료), 연속 API 오류 차단기(8건), 402 치명 처리, 스키마 밖 키(`_usage` 등)를 가진 후보 거부, 헤더 `prompt_sha256` 식 정정이 들어갔다. 위 P1·P2 는 여전히 적용 안 됨이다.
 - 토큰 사용량을 기록하지 않는다. 그래서 어댑터의 `tokens_in`, `tokens_out`, `cost_usd`는 항상 `None`(미측정)이다. 측정하려면 `r.usage`를 후보 줄이나 `_run`에 남기는 변경이 필요하다.
 - 파일 하나의 API 호출이 실패하면 `ERROR`를 출력하고 그 파일을 건너뛴 채 exit 0으로 끝난다. 어댑터는 stdout의 `]  ERROR ` 줄 수를 세어 `meta.error`에 남긴다.
 - 출력 파일이 `scan-<commit8>.jsonl`로 scan.py 옆에 생긴다. 같은 커밋을 동시에 두 번 돌리면 서로 덮어쓴다. 출력 경로 인자(`--out`)가 있으면 어댑터가 파일을 옮길 필요가 없다.
@@ -66,3 +68,5 @@ scan.py는 `r.usage`를 버린다. 그래서 하네스의 AttackTrail `tokens_in
 ### 변경 제안
 
 후보 줄과 별도로 파일마다 `{"_usage": {"file", "input_tokens", "output_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"}}` 한 줄을 JSONL에 남긴다. 어댑터는 이 줄을 합산해 `meta.tokens_in/out`을 채운다. 달러 환산은 검증된 단가가 확정된 뒤 어댑터에서 한다. `cache_read_input_tokens`가 남으면 프롬프트 캐싱이 실제로 히트하는지도 같이 확인된다.
+
+적용됨(2026-10-19, DECISIONS D-19): 위 제안대로 `_usage` 행을 남기고 어댑터가 합산한다. 제안에 `cache_creation` 의 1시간·5분 구분을 더했다. 달러 환산은 아직 안 했다.

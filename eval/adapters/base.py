@@ -11,7 +11,9 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 SEVERITIES = ("critical", "high", "medium", "low", "info")
-AGENT_STATUS = ("ok", "timeout", "build_failed", "crashed")
+# no_files (D-27): the scanner found nothing in its supported languages to send. A limit of the tool, not a failure,
+# so it is kept apart from crashed and reported as "unsupported" instead of silently leaving the denominators.
+AGENT_STATUS = ("ok", "timeout", "build_failed", "crashed", "no_files")
 
 EVAL_DIR = Path(__file__).resolve().parent.parent
 REPO_ROOT = EVAL_DIR.parent
@@ -57,6 +59,17 @@ class Meta(_Strict):
     wall_seconds: float | None = None
     status: Literal[AGENT_STATUS]  # type: ignore[valid-type]
     error: str | None = None
+    # Coverage of a file-by-file scan (AttackTrail adapters). None = not measured (baseline, old runs).
+    # files_total == files_scanned + files_failed + files_skipped. scanned = a response was received
+    # and its candidates were read; failed = the call or its response failed; skipped = never sent.
+    files_total: int | None = None
+    files_scanned: int | None = None
+    files_failed: int | None = None
+    files_skipped: int | None = None
+    # Files whose response came from a server-side fallback model, and those models (API adapter only; D-23).
+    # None = not measured (CLI and baseline never send fallbacks, runs from before this field).
+    files_fallback: int | None = None
+    fallback_models: list[str] | None = None
 
 
 class Findings(_Strict):
@@ -115,6 +128,9 @@ def scoped_env(ctx: RunContext, secret_key: str) -> dict[str, str]:
 
 class Agent(ABC):
     name: str
+    # Project timeout (s) when `eval run --timeout` is not given. An agent whose calls take long overrides it
+    # (the API adapter, D-24); the runner records the value used in manifest agent.timeout_s.
+    default_timeout_s: int = 1800
 
     def version(self) -> str:
         return repo_version()
@@ -125,11 +141,17 @@ class Agent(ABC):
     def prompt_hash(self) -> str:
         raise NotImplementedError
 
-    def failed(self, status: str, error: str, wall_seconds: float | None = None) -> Findings:
-        """Findings for an agent-side failure: no vulnerabilities, status + error recorded."""
+    def fingerprints(self) -> dict:
+        """Extra identity fields merged into manifest["agent"]. Must not raise."""
+        return {}
+
+    def failed(self, status: str, error: str, wall_seconds: float | None = None, **meta) -> Findings:
+        """Findings for an agent-side failure: no vulnerabilities, status + error recorded.
+
+        meta: more Meta fields known even though the scan did not run, e.g. the zero coverage counts of no_files."""
         return Findings(vulnerabilities=[], meta=Meta(
             agent=self.name, agent_version=self.version(), model=self.model(),
-            status=status, error=error, wall_seconds=wall_seconds))
+            status=status, error=error, wall_seconds=wall_seconds, **meta))
 
     @abstractmethod
     def run(self, scope: Scope, ctx: RunContext) -> Findings:
