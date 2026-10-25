@@ -72,6 +72,19 @@ def test_nethermind_without_key_fails_fast(tmp_path, monkeypatch):
     assert not (run_dir / "scores.json").exists()
 
 
+def test_only_missing_skips_scored_projects_but_reports_them(tmp_path, monkeypatch):
+    run_dir = _make_run(tmp_path)
+    evaluate(run_dir, SRC, [PID], judge="mock")
+    scored = (run_dir / "scoring_output" / f"{PID}_results.json").read_text(encoding="utf-8")
+    from scoring import mock_judge
+    monkeypatch.setattr(mock_judge, "run_mock", lambda *a, **k: pytest.fail("re-judged a scored project"))
+
+    res = evaluate(run_dir, SRC, [PID], judge="mock", only_missing=True)
+
+    assert (run_dir / "scoring_output" / f"{PID}_results.json").read_text(encoding="utf-8") == scored
+    assert PID in res.per_project
+
+
 def _verdicts(run_dir: Path) -> list[tuple]:
     entries = json.loads((run_dir / "scoring_output" / f"{PID}_results.json").read_text(encoding="utf-8"))
     return [(e["is_match"], e["is_partial_match"], e["is_fp"]) for e in entries]
