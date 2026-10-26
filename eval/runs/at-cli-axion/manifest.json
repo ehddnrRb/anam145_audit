@@ -1,0 +1,69 @@
+{
+  "run_id": "20261013T054356Z-0cfdd2",
+  "started_at": "2026-10-13T05:29:01+00:00",
+  "finished_at": "2026-10-13T05:43:56+00:00",
+  "cli_argv": [
+    "C:\\Users\\정동욱\\anam_audit\\eval\\cli.py",
+    "run",
+    "--agent",
+    "attacktrail-cli",
+    "--model",
+    "claude-sonnet-5",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "sherlock_axion_2025_01",
+    "--out",
+    "runs\\at-cli-axion"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "attacktrail-cli",
+    "version": "164e749c79031079f71e069daa9ee0c90ee1f684-dirty",
+    "model": "claude-sonnet-5",
+    "prompt_hash": "a3213ef9b1cedd3385055ffa01b1918c0d2e2f1d49372af21aea8e8bfc3ef335"
+  },
+  "judge": {
+    "kind": "nethermind",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "o4-mini",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "sherlock_axion_2025_01",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_axion_2025_01",
+        "head": "9a9adab905878a3a8c4fbe7c0851354185d8466a",
+        "seconds": 0.093,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 270.47,
+      "tokens_in": 230360,
+      "tokens_out": 66883,
+      "cost_usd": 1.173694,
+      "n_findings": 22
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted."
+}

@@ -1,0 +1,56 @@
+{
+  "run_id": "20261001T134023Z-d81244-agg",
+  "started_at": "2026-10-01T13:40:20+00:00",
+  "finished_at": "2026-10-01T13:40:23+00:00",
+  "cli_argv": [
+    "cli.py",
+    "run",
+    "--agent",
+    "baseline",
+    "--baseline-mode",
+    "precomputed",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "sherlock_axion_2025_01,sherlock_tally_2024_12,code4rena_superposition_2025_01",
+    "--judge",
+    "mock",
+    "--repeat",
+    "2",
+    "--out",
+    "runs/smoke-mock-rep"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "baseline",
+    "version": "7c013335dd47b072fc67fb485f61152a176662f4-dirty",
+    "model": "gpt-5 (precomputed upstream)",
+    "prompt_hash": "4320ac74fd39122c0530f6be358a4a5459de52ca0f1b54d2b82a7acee2538902"
+  },
+  "judge": {
+    "kind": "mock",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "mock",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": null,
+    "of": 2
+  },
+  "projects": [],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted.",
+  "runs": [
+    "rep-1",
+    "rep-2"
+  ]
+}

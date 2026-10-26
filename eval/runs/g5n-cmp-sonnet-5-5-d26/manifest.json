@@ -1,0 +1,83 @@
+{
+  "run_id": "20261026T071458Z-df20ef",
+  "started_at": "2026-10-26T06:58:12+00:00",
+  "finished_at": "2026-10-26T07:14:58+00:00",
+  "cli_argv": [
+    "cli.py",
+    "rescore",
+    "runs\\g5n-cmp-sonnet-5-5-d26",
+    "--agent",
+    "attacktrail",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "code4rena_secondswap_2025_02",
+    "--judge",
+    "nethermind",
+    "--judge-model",
+    "gpt-5-nano-2025-08-07"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "attacktrail",
+    "version": "b9a0d90efa173ba02e901881b1dec46e037b4290-dirty",
+    "model": "claude-sonnet-5-5",
+    "prompt_hash": "df7d8013fbd7865821211e6adbc91235b465296f922ef1041e32593861eb7f68",
+    "scan_py_sha256": "550694799c084f114b7e1f4f13ad4cef9e8531174621bdeadd518bcedea672bf",
+    "prompt_sha256": "2d0bb457ca2c605a07cbd6d12469ba61236859556a7fc79056d20c069a00929f",
+    "call_shape": "api-v6",
+    "effort": "high",
+    "max_tokens": 64000,
+    "fingerprint_source": "snapshot",
+    "snapshot_dir": "agent_snapshot"
+  },
+  "judge": {
+    "kind": "nethermind",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "gpt-5-nano-2025-08-07",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "code4rena_secondswap_2025_02",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_secondswap_2025_02",
+        "head": "214849c3517eb26b31fe194bceae65cb0f52d2c0",
+        "seconds": 0.109,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 69.92199999990407,
+      "tokens_in": 121185,
+      "tokens_out": 27781,
+      "cost_usd": null,
+      "n_findings": 27,
+      "files_total": 16,
+      "files_scanned": 16,
+      "files_failed": 0,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted. Projects with agent_status no_files (the scanner found no file in its supported languages) are not counted either, but they are a tool limit, not a failure: their truths and the Recall with those truths counted as misses are in `unsupported` (here and in scores.json)."
+}

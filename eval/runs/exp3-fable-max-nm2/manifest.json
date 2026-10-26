@@ -1,0 +1,137 @@
+{
+  "run_id": "20261025T053635Z-ee9ee2",
+  "started_at": "2026-10-25T04:36:17+00:00",
+  "finished_at": "2026-10-25T05:36:35+00:00",
+  "cli_argv": [
+    "cli.py",
+    "rescore",
+    "runs\\exp3-fable-max-nm2",
+    "--agent",
+    "attacktrail",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "code4rena_kinetiq_2025_07,sherlock_cork-protocol_2025_01,code4rena_next-generation_2025_05",
+    "--judge",
+    "nethermind",
+    "--judge-model",
+    "gpt-5-nano-2025-08-07"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "attacktrail",
+    "version": "b9a0d90efa173ba02e901881b1dec46e037b4290-dirty",
+    "model": "claude-fable-5-1",
+    "prompt_hash": "3b9f9f3d13872259007d46123976955f76c8eafcefb5adf6cb6574e71f81c854",
+    "scan_py_sha256": "39c5a86388279b0367bac62747213b0df04d56601bea5df419513d0f7ba45376",
+    "prompt_sha256": "2d0bb457ca2c605a07cbd6d12469ba61236859556a7fc79056d20c069a00929f",
+    "call_shape": "api-v6",
+    "effort": "max",
+    "max_tokens": 128000,
+    "fingerprint_source": "snapshot",
+    "snapshot_dir": "agent_snapshot"
+  },
+  "judge": {
+    "kind": "nethermind",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "gpt-5-nano-2025-08-07",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "code4rena_kinetiq_2025_07",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_kinetiq_2025_07",
+        "head": "7f29c917c09341672e73be2f7917edf920ea2adb",
+        "seconds": 0.109,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": "8 of 25 files not scanned: 8 failed, 0 skipped; failed files (first 5 of 8): out/IOracleManager.sol ([Errno 13] Permission denied: 'C:\\\\Users\\\\정동욱\\\\anam_audit\\\\eval\\\\datasets\\\\sourc), out/IPauserRegistry.sol ([Errno 13] Permission denied: 'C:\\\\Users\\\\정동욱\\\\anam_audit\\\\eval\\\\datasets\\\\sourc), out/IStakingManager.sol ([Errno 13] Permission denied: 'C:\\\\Users\\\\정동욱\\\\anam_audit\\\\eval\\\\datasets\\\\sourc), out/IValidatorManager.sol ([Errno 13] Permission denied: 'C:\\\\Users\\\\정동욱\\\\anam_audit\\\\eval\\\\datasets\\\\sourc), out/KHYPE.sol ([Errno 13] Permission denied: 'C:\\\\Users\\\\정동욱\\\\anam_audit\\\\eval\\\\datasets\\\\sourc)",
+      "wall_seconds": 818.6870000000345,
+      "tokens_in": 146012,
+      "tokens_out": 220206,
+      "cost_usd": null,
+      "n_findings": 50,
+      "files_total": 25,
+      "files_scanned": 17,
+      "files_failed": 8,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    },
+    {
+      "project_id": "sherlock_cork-protocol_2025_01",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_cork-protocol_2025_01",
+        "head": "d4fcdd524deb5d07a7ccfd6eb49ba5157ed42642",
+        "seconds": 0.125,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": "24 of 44 files not scanned: 4 failed, 20 skipped (20 time budget reached); failed files: contracts/core/flash-swaps/FlashSwapRouter.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/interfaces/IVault.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/interfaces/uniswap-v2/pair.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/interfaces/uniswap-v2/RouterV1.sol (timeout: hard deadline reached (call still running); 응답을 못 읽어 토큰 미집계); 1 call(s) still running at the hard deadline were abandoned: no response was read, so their tokens are not in tokens_in/tokens_out (undercount); 3 stream(s) ended mid-way (deadline, stall or connection loss): their usage is what the stream had reported at message_start, so tokens_out is a lower bound and tokens_in can leave out the input of the other attempt (a fallback before the cut)",
+      "wall_seconds": 65089.718999999925,
+      "tokens_in": 171301,
+      "tokens_out": 217918,
+      "cost_usd": null,
+      "n_findings": 50,
+      "files_total": 44,
+      "files_scanned": 20,
+      "files_failed": 4,
+      "files_skipped": 20,
+      "files_fallback": 1,
+      "fallback_models": [
+        "claude-opus-4-8"
+      ]
+    },
+    {
+      "project_id": "code4rena_next-generation_2025_05",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_next-generation_2025_05",
+        "head": "499cfa50a56126c0c3c6caa30808d79f82d31e34",
+        "seconds": 0.797,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 746.030999999959,
+      "tokens_in": 59119,
+      "tokens_out": 184352,
+      "cost_usd": null,
+      "n_findings": 48,
+      "files_total": 8,
+      "files_scanned": 8,
+      "files_failed": 0,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted. Projects with agent_status no_files (the scanner found no file in its supported languages) are not counted either, but they are a tool limit, not a failure: their truths and the Recall with those truths counted as misses are in `unsupported` (here and in scores.json)."
+}

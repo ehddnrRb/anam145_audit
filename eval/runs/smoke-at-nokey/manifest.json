@@ -1,0 +1,89 @@
+{
+  "run_id": "20261001T134142Z-d86f40",
+  "started_at": "2026-10-01T13:41:42+00:00",
+  "finished_at": "2026-10-01T13:41:42+00:00",
+  "cli_argv": [
+    "cli.py",
+    "run",
+    "--agent",
+    "attacktrail",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "sherlock_axion_2025_01,sherlock_tally_2024_12",
+    "--judge",
+    "mock",
+    "--out",
+    "runs/smoke-at-nokey"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "attacktrail",
+    "version": "7c013335dd47b072fc67fb485f61152a176662f4-dirty",
+    "model": "claude-sonnet-5",
+    "prompt_hash": "41d318db275accf03bad20ee252be7ab1babad1b137bbfa7cc5321e938f4f5e5"
+  },
+  "judge": {
+    "kind": "mock",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "mock",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "sherlock_axion_2025_01",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_axion_2025_01",
+        "head": "9a9adab905878a3a8c4fbe7c0851354185d8466a",
+        "seconds": 0.047,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "crashed",
+      "agent_error": "ANTHROPIC_API_KEY not set",
+      "wall_seconds": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "n_findings": 0
+    },
+    {
+      "project_id": "sherlock_tally_2024_12",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_tally_2024_12",
+        "head": "fda09a661bbe1b5800fa72f52d6367de46740551",
+        "seconds": 0.063,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "crashed",
+      "agent_error": "ANTHROPIC_API_KEY not set",
+      "wall_seconds": null,
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "n_findings": 0
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted."
+}
