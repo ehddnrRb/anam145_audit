@@ -1,0 +1,22 @@
+{
+  "project_id": "REPLACE_platform_name_yyyy_mm",
+  "name": "REPLACE human readable name",
+  "platform": "REPLACE e.g. code4rena | sherlock | cantina | internal",
+  "codebases": [
+    {
+      "codebase_id": "REPLACE name_<first 6 chars of commit>",
+      "repo_url": "https://github.com/REPLACE/REPLACE",
+      "commit": "REPLACE_WITH_FULL_40_CHAR_COMMIT_SHA",
+      "tree_url": "https://github.com/REPLACE/REPLACE/tree/REPLACE_WITH_FULL_40_CHAR_COMMIT_SHA",
+      "tarball_url": "https://github.com/REPLACE/REPLACE/archive/REPLACE_WITH_FULL_40_CHAR_COMMIT_SHA.tar.gz"
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "finding_id": "REPLACE_H-01",
+      "severity": "high",
+      "title": "REPLACE one-line title of the known bug",
+      "description": "REPLACE full write-up: root cause, affected function/contract names, impact. The judge only sees title and description."
+    }
+  ]
+}

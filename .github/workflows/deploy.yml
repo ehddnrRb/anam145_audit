@@ -32,7 +32,8 @@ jobs:
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          # 공개 사이트는 site/ 만 배포한다. 루트의 문서와 eval/ 은 배포 대상이 아니다.
+          path: "site"
 
       - name: Deploy
         id: deployment

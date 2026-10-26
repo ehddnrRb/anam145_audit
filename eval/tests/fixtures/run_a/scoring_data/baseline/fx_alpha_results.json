@@ -1,0 +1,29 @@
+{
+  "project": "fx_alpha",
+  "findings": [
+    {
+      "title": "A finding zero",
+      "description": "A finding zero synthetic agent description.",
+      "severity": "high",
+      "file": "src/Fx.sol"
+    },
+    {
+      "title": "A finding one",
+      "description": "A finding one synthetic agent description.",
+      "severity": "medium",
+      "file": "src/Fx.sol"
+    },
+    {
+      "title": "A finding two",
+      "description": "A finding two synthetic agent description.",
+      "severity": "medium",
+      "file": "src/Fx.sol"
+    },
+    {
+      "title": "A finding three",
+      "description": "A finding three synthetic agent description.",
+      "severity": "info",
+      "file": "src/Fx.sol"
+    }
+  ]
+}

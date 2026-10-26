@@ -1,0 +1,866 @@
+[
+  {
+    "project_id": "code4rena_coded-estate-invitational_2024_12",
+    "checkout_status": "ok",
+    "seconds": 1.594,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "97efb35fd3734676f33598e6dff70119e41c7032",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 33,
+    "primary_language": "rust",
+    "lang_file_counts": {
+      "rust": 15
+    },
+    "primary_contract_language": "rust",
+    "in_segment_evm": false,
+    "sol_files": 0,
+    "sol_lines": 0,
+    "max_abs_path_len": 139,
+    "scanpy_files": 0,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 0,
+    "scanpy_by_ext": {},
+    "scanpy_test_files": 0
+  },
+  {
+    "project_id": "code4rena_fenix-finance-invitational_2024_10",
+    "checkout_status": "ok",
+    "seconds": 2.594,
+    "unshallowed": false,
+    "pinned": false,
+    "head": "33d2b53c972bf8a030e6a33581227844fff8db7b",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 15,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 92,
+      "solidity": 140
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 140,
+    "sol_lines": 21450,
+    "max_abs_path_len": 175,
+    "scanpy_files": 231,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 2019119,
+    "scanpy_by_ext": {
+      ".ts": 91,
+      ".sol": 140
+    },
+    "scanpy_test_files": 55
+  },
+  {
+    "project_id": "code4rena_superposition_2025_01",
+    "checkout_status": "ok",
+    "seconds": 0.109,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "4528c9d2dbe1550d2660dac903a8246076044905",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 11,
+    "primary_language": "ts/js",
+    "lang_file_counts": {
+      "go": 41,
+      "rust": 46,
+      "solidity": 15,
+      "ts/js": 47
+    },
+    "primary_contract_language": "rust",
+    "in_segment_evm": false,
+    "sol_files": 13,
+    "sol_lines": 1594,
+    "max_abs_path_len": 175,
+    "scanpy_files": 103,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 1068552,
+    "scanpy_by_ext": {
+      ".go": 41,
+      ".sol": 15,
+      ".ts": 41,
+      ".js": 6
+    },
+    "scanpy_test_files": 2
+  },
+  {
+    "project_id": "code4rena_lambowin_2025_02",
+    "checkout_status": "ok",
+    "seconds": 8.219,
+    "unshallowed": false,
+    "pinned": false,
+    "head": "4eff430da9c1e040b55fa499c4b78b252ecc7c41",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 14,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 2,
+      "solidity": 45
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 39,
+    "sol_lines": 8452,
+    "max_abs_path_len": 216,
+    "scanpy_files": 47,
+    "scanpy_glob_nonfile": 8,
+    "scanpy_bytes": 699562,
+    "scanpy_by_ext": {
+      ".js": 2,
+      ".sol": 45
+    },
+    "scanpy_test_files": 6
+  },
+  {
+    "project_id": "code4rena_loopfi_2025_02",
+    "checkout_status": "ok",
+    "seconds": 2.594,
+    "unshallowed": false,
+    "pinned": false,
+    "head": "d67538652ba9d5447d9c09aeb5d8d0362faeafb3",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 7,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 7,
+      "solidity": 106
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 71,
+    "sol_lines": 12078,
+    "max_abs_path_len": 203,
+    "scanpy_files": 113,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 1323170,
+    "scanpy_by_ext": {
+      ".js": 7,
+      ".sol": 106
+    },
+    "scanpy_test_files": 35
+  },
+  {
+    "project_id": "code4rena_secondswap_2025_02",
+    "checkout_status": "ok",
+    "seconds": 8.031,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "214849c3517eb26b31fe194bceae65cb0f52d2c0",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 30,
+    "primary_language": "ts/js",
+    "lang_file_counts": {
+      "ts/js": 21,
+      "solidity": 15
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 15,
+    "sol_lines": 2163,
+    "max_abs_path_len": 184,
+    "scanpy_files": 36,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 244402,
+    "scanpy_by_ext": {
+      ".ts": 21,
+      ".sol": 15
+    },
+    "scanpy_test_files": 4
+  },
+  {
+    "project_id": "code4rena_bakerfi-invitational_2025_02",
+    "checkout_status": "ok",
+    "seconds": 2.64,
+    "unshallowed": false,
+    "pinned": false,
+    "head": "0daf8a0547b6245faed5b6cd3f5daf44d2ea7c9a",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 32,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 82,
+      "solidity": 114
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 111,
+    "sol_lines": 11624,
+    "max_abs_path_len": 141,
+    "scanpy_files": 195,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 947307,
+    "scanpy_by_ext": {
+      ".ts": 81,
+      ".sol": 114
+    },
+    "scanpy_test_files": 37
+  },
+  {
+    "project_id": "code4rena_pump-science_2025_02",
+    "checkout_status": "ok",
+    "seconds": 4.469,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "768ef58478724bf6b464c9f0952e3e5a3b2a2613",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 17,
+    "primary_language": "rust",
+    "lang_file_counts": {
+      "ts/js": 45,
+      "rust": 47
+    },
+    "primary_contract_language": "rust",
+    "in_segment_evm": false,
+    "sol_files": 0,
+    "sol_lines": 0,
+    "max_abs_path_len": 145,
+    "scanpy_files": 44,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 406563,
+    "scanpy_by_ext": {
+      ".ts": 43,
+      ".js": 1
+    },
+    "scanpy_test_files": 4
+  },
+  {
+    "project_id": "code4rena_liquid-ron_2025_03",
+    "checkout_status": "ok",
+    "seconds": 9.938,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "e4b0b7c256bb2fe73b4a9c945415c3dcc935b61d",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 5,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 14
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 11,
+    "sol_lines": 990,
+    "max_abs_path_len": 110,
+    "scanpy_files": 14,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 70951,
+    "scanpy_by_ext": {
+      ".sol": 14
+    },
+    "scanpy_test_files": 3
+  },
+  {
+    "project_id": "code4rena_iq-ai_2025_03",
+    "checkout_status": "ok",
+    "seconds": 7.0,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "b16b866d4c8d3e4a69b37a02c4e396d4b294537e",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 9,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 20
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 11,
+    "sol_lines": 1585,
+    "max_abs_path_len": 100,
+    "scanpy_files": 20,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 130511,
+    "scanpy_by_ext": {
+      ".sol": 20
+    },
+    "scanpy_test_files": 9
+  },
+  {
+    "project_id": "code4rena_mantra-dex_2025_03",
+    "checkout_status": "ok",
+    "seconds": 7.906,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "5ef933edd569c201d830c96acc377b7fd285ca35",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 55,
+    "primary_language": "rust",
+    "lang_file_counts": {
+      "rust": 83,
+      "python": 1,
+      "ts/js": 2
+    },
+    "primary_contract_language": "rust",
+    "in_segment_evm": false,
+    "sol_files": 0,
+    "sol_lines": 0,
+    "max_abs_path_len": 209,
+    "scanpy_files": 3,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 325106,
+    "scanpy_by_ext": {
+      ".py": 1,
+      ".js": 2
+    },
+    "scanpy_test_files": 0
+  },
+  {
+    "project_id": "code4rena_initia-move_2025_04",
+    "checkout_status": "pinned_commit_missing",
+    "seconds": 0.0,
+    "unshallowed": false,
+    "pinned": true,
+    "head": null,
+    "error": "empty commit in dataset",
+    "codebases": 1,
+    "truth_findings": 18
+  },
+  {
+    "project_id": "code4rena_forte-float128-solidity-library_2025_04",
+    "checkout_status": "ok",
+    "seconds": 6.407,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "4d6694f68e80543885da78666e38c0dc7052d992",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 12,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "python": 1,
+      "solidity": 8
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 3,
+    "sol_lines": 2199,
+    "max_abs_path_len": 130,
+    "scanpy_files": 9,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 154547,
+    "scanpy_by_ext": {
+      ".py": 1,
+      ".sol": 8
+    },
+    "scanpy_test_files": 5
+  },
+  {
+    "project_id": "code4rena_next-generation_2025_05",
+    "checkout_status": "ok",
+    "seconds": 6.766,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "499cfa50a56126c0c3c6caa30808d79f82d31e34",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 14,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 5,
+      "solidity": 6
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 6,
+    "sol_lines": 833,
+    "max_abs_path_len": 125,
+    "scanpy_files": 11,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 73177,
+    "scanpy_by_ext": {
+      ".js": 5,
+      ".sol": 6
+    },
+    "scanpy_test_files": 1
+  },
+  {
+    "project_id": "code4rena_cabal-liquid-staking-token_2025_05",
+    "checkout_status": "ok",
+    "seconds": 5.422,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "5b5f92ab4f95e5f9f405bbfa252860472d164705",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 8,
+    "primary_language": "move",
+    "lang_file_counts": {
+      "ts/js": 1,
+      "move": 29
+    },
+    "primary_contract_language": "move",
+    "in_segment_evm": false,
+    "sol_files": 0,
+    "sol_lines": 0,
+    "max_abs_path_len": 130,
+    "scanpy_files": 1,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 4339,
+    "scanpy_by_ext": {
+      ".ts": 1
+    },
+    "scanpy_test_files": 0
+  },
+  {
+    "project_id": "code4rena_starknet-perpetual_2025_06",
+    "checkout_status": "pinned_commit_missing",
+    "seconds": 0.0,
+    "unshallowed": false,
+    "pinned": true,
+    "head": null,
+    "error": "empty commit in dataset",
+    "codebases": 2,
+    "truth_findings": 13
+  },
+  {
+    "project_id": "code4rena_blackhole_2025_07",
+    "checkout_status": "ok",
+    "seconds": 3.313,
+    "unshallowed": false,
+    "pinned": false,
+    "head": "133e380b9cbd35010dcf5b87235695fddfa26c85",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 37,
+    "primary_language": "ts/js",
+    "lang_file_counts": {
+      "ts/js": 437,
+      "solidity": 120
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 120,
+    "sol_lines": 16052,
+    "max_abs_path_len": 207,
+    "scanpy_files": 557,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 4230040,
+    "scanpy_by_ext": {
+      ".js": 437,
+      ".sol": 120
+    },
+    "scanpy_test_files": 5
+  },
+  {
+    "project_id": "code4rena_kinetiq_2025_07",
+    "checkout_status": "ok",
+    "seconds": 7.031,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "7f29c917c09341672e73be2f7917edf920ea2adb",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 25,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 42,
+      "python": 1
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 35,
+    "sol_lines": 4785,
+    "max_abs_path_len": 120,
+    "scanpy_files": 43,
+    "scanpy_glob_nonfile": 8,
+    "scanpy_bytes": 254818,
+    "scanpy_by_ext": {
+      ".sol": 42,
+      ".py": 1
+    },
+    "scanpy_test_files": 7
+  },
+  {
+    "project_id": "code4rena_virtuals-protocol_2025_08",
+    "checkout_status": "ok",
+    "seconds": 6.219,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "28e93273daec5a9c73c438e216dde04c084be452",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 43,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 64,
+      "solidity": 80
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 80,
+    "sol_lines": 10172,
+    "max_abs_path_len": 144,
+    "scanpy_files": 144,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 604129,
+    "scanpy_by_ext": {
+      ".js": 35,
+      ".sol": 80,
+      ".ts": 29
+    },
+    "scanpy_test_files": 14
+  },
+  {
+    "project_id": "cantina_smart-contract-audit-of-tn-contracts_2025_08",
+    "checkout_status": "ok",
+    "seconds": 9.234,
+    "unshallowed": true,
+    "pinned": true,
+    "head": "b3d8116094e67fdbc5977725eea3e7cf577866bd",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 23,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 45,
+      "ts/js": 8
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 35,
+    "sol_lines": 4992,
+    "max_abs_path_len": 162,
+    "scanpy_files": 53,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 504015,
+    "scanpy_by_ext": {
+      ".sol": 45,
+      ".ts": 8
+    },
+    "scanpy_test_files": 10
+  },
+  {
+    "project_id": "cantina_minimal-delegation_2025_04",
+    "checkout_status": "ok",
+    "seconds": 4.188,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "732247c5e3146b9340cb29e0f2b8f9e2f1df67a4",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 17,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 73,
+      "ts/js": 4
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 40,
+    "sol_lines": 1536,
+    "max_abs_path_len": 127,
+    "scanpy_files": 77,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 594614,
+    "scanpy_by_ext": {
+      ".sol": 73,
+      ".js": 2,
+      ".ts": 2
+    },
+    "scanpy_test_files": 37
+  },
+  {
+    "project_id": "sherlock_20240913---final---perennial-v2-update-3-audit-report_2024_09",
+    "checkout_status": "ok",
+    "seconds": 5.782,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "ac46a2fc8baf6c827ee20c69eecae66561a5c65f",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 21,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 202,
+      "solidity": 222
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 198,
+    "sol_lines": 17447,
+    "max_abs_path_len": 233,
+    "scanpy_files": 415,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 3730101,
+    "scanpy_by_ext": {
+      ".ts": 193,
+      ".sol": 222
+    },
+    "scanpy_test_files": 157
+  },
+  {
+    "project_id": "sherlock_20240920---final---boost-core-incentive-protocol-audit-report_2024_09",
+    "checkout_status": "ok",
+    "seconds": 19.109,
+    "unshallowed": true,
+    "pinned": true,
+    "head": "5711a9160c51abec01056c5a70501fd13f6ac489",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 7,
+    "primary_language": "ts/js",
+    "lang_file_counts": {
+      "ts/js": 92,
+      "solidity": 68
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 45,
+    "sol_lines": 3887,
+    "max_abs_path_len": 192,
+    "scanpy_files": 160,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 994550,
+    "scanpy_by_ext": {
+      ".js": 6,
+      ".ts": 86,
+      ".sol": 68
+    },
+    "scanpy_test_files": 31
+  },
+  {
+    "project_id": "sherlock_morph-l-2_2024_09",
+    "checkout_status": "ok",
+    "seconds": 18.375,
+    "unshallowed": true,
+    "pinned": true,
+    "head": "22ca805e2d09c9d0bddb3e8a52ddd7d3435ce769",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 13,
+    "primary_language": "go",
+    "lang_file_counts": {
+      "go": 250,
+      "ts/js": 44,
+      "solidity": 157,
+      "rust": 38,
+      "python": 3
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 118,
+    "sol_lines": 15983,
+    "max_abs_path_len": 180,
+    "scanpy_files": 454,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 7141584,
+    "scanpy_by_ext": {
+      ".go": 250,
+      ".ts": 34,
+      ".sol": 157,
+      ".js": 10,
+      ".py": 3
+    },
+    "scanpy_test_files": 40
+  },
+  {
+    "project_id": "sherlock_oku_2024_12",
+    "checkout_status": "ok",
+    "seconds": 1.765,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "9e31b40fa8593905b9c1037c424d89ec2c886203",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 19,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 22,
+      "solidity": 35
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 35,
+    "sol_lines": 5201,
+    "max_abs_path_len": 131,
+    "scanpy_files": 57,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 449041,
+    "scanpy_by_ext": {
+      ".ts": 22,
+      ".sol": 35
+    },
+    "scanpy_test_files": 6
+  },
+  {
+    "project_id": "sherlock_tally_2024_12",
+    "checkout_status": "ok",
+    "seconds": 0.047,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "fda09a661bbe1b5800fa72f52d6367de46740551",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 11,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 29
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 14,
+    "sol_lines": 1755,
+    "max_abs_path_len": 126,
+    "scanpy_files": 29,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 422726,
+    "scanpy_by_ext": {
+      ".sol": 29
+    },
+    "scanpy_test_files": 15
+  },
+  {
+    "project_id": "sherlock_idle-finance_2024_12",
+    "checkout_status": "ok",
+    "seconds": 6.265,
+    "unshallowed": true,
+    "pinned": true,
+    "head": "b6e581375eab89871d47994abd34fb0d3ed7c86d",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 5,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 31,
+      "solidity": 247
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 210,
+    "sol_lines": 19204,
+    "max_abs_path_len": 152,
+    "scanpy_files": 277,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 1730563,
+    "scanpy_by_ext": {
+      ".js": 30,
+      ".sol": 247
+    },
+    "scanpy_test_files": 60
+  },
+  {
+    "project_id": "sherlock_cork-protocol_2025_01",
+    "checkout_status": "ok",
+    "seconds": 3.079,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "d4fcdd524deb5d07a7ccfd6eb49ba5157ed42642",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 18,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 13,
+      "solidity": 43
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 43,
+    "sol_lines": 5414,
+    "max_abs_path_len": 126,
+    "scanpy_files": 56,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 343961,
+    "scanpy_by_ext": {
+      ".ts": 13,
+      ".sol": 43
+    },
+    "scanpy_test_files": 8
+  },
+  {
+    "project_id": "sherlock_axion_2025_01",
+    "checkout_status": "ok",
+    "seconds": 0.047,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "9a9adab905878a3a8c4fbe7c0851354185d8466a",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 10,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "ts/js": 5,
+      "solidity": 20
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 20,
+    "sol_lines": 2577,
+    "max_abs_path_len": 114,
+    "scanpy_files": 25,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 178544,
+    "scanpy_by_ext": {
+      ".ts": 5,
+      ".sol": 20
+    },
+    "scanpy_test_files": 4
+  },
+  {
+    "project_id": "sherlock_symmio_2025_03",
+    "checkout_status": "ok",
+    "seconds": 2.093,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "cfe192090c339cffb07d2a50f6ba646299fbcfe0",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 6,
+    "primary_language": "ts/js",
+    "lang_file_counts": {
+      "ts/js": 17,
+      "solidity": 13
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 13,
+    "sol_lines": 1582,
+    "max_abs_path_len": 117,
+    "scanpy_files": 30,
+    "scanpy_glob_nonfile": 0,
+    "scanpy_bytes": 177543,
+    "scanpy_by_ext": {
+      ".ts": 17,
+      ".sol": 13
+    },
+    "scanpy_test_files": 8
+  },
+  {
+    "project_id": "sherlock_crestal-network_2025_03",
+    "checkout_status": "ok",
+    "seconds": 3.094,
+    "unshallowed": false,
+    "pinned": true,
+    "head": "dc45e98af5e247dce5bbe53b0bd5b1f256884f84",
+    "error": null,
+    "codebases": 1,
+    "truth_findings": 7,
+    "primary_language": "solidity",
+    "lang_file_counts": {
+      "solidity": 29
+    },
+    "primary_contract_language": "solidity",
+    "in_segment_evm": true,
+    "sol_files": 20,
+    "sol_lines": 3664,
+    "max_abs_path_len": 144,
+    "scanpy_files": 29,
+    "scanpy_glob_nonfile": 5,
+    "scanpy_bytes": 209951,
+    "scanpy_by_ext": {
+      ".sol": 29
+    },
+    "scanpy_test_files": 9
+  }
+]

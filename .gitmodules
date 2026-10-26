@@ -1,0 +1,3 @@
+[submodule "eval/datasets/scabench"]
+	path = eval/datasets/scabench
+	url = https://github.com/scabench-org/scabench.git

@@ -1,0 +1,67 @@
+{
+  "run_id": "20261013T052514Z-7151e2",
+  "started_at": "2026-10-13T05:24:11+00:00",
+  "finished_at": "2026-10-13T05:25:14+00:00",
+  "cli_argv": [
+    "C:\\Users\\정동욱\\anam_audit\\eval\\cli.py",
+    "run",
+    "--agent",
+    "baseline",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "sherlock_axion_2025_01",
+    "--out",
+    "runs\\judge-cost-axion"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "baseline",
+    "version": "164e749c79031079f71e069daa9ee0c90ee1f684-dirty",
+    "model": "gpt-5 (precomputed upstream)",
+    "prompt_hash": "4320ac74fd39122c0530f6be358a4a5459de52ca0f1b54d2b82a7acee2538902"
+  },
+  "judge": {
+    "kind": "nethermind",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "o4-mini",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "sherlock_axion_2025_01",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_axion_2025_01",
+        "head": "9a9adab905878a3a8c4fbe7c0851354185d8466a",
+        "seconds": 0.109,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": null,
+      "tokens_in": 13200,
+      "tokens_out": 31837,
+      "cost_usd": null,
+      "n_findings": 7
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted."
+}
