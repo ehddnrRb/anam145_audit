@@ -1,4 +1,5 @@
 import _thread
+import io
 import json
 import shutil
 import subprocess
@@ -187,14 +188,23 @@ def test_cli_env_carries_no_api_keys(monkeypatch):
 
 
 def test_cli_agent_unreadable_files_fail_only_that_file(tmp_path, monkeypatch):
-    # D-20 (M4): reading the file and building the prompt used to sit outside the try in one(). A directory
-    # named X.sol (select_files returns it: it matches the extension) or one unreadable file raised in the
-    # writer loop (pool.map) and the whole project was recorded as crashed.
+    # D-20 (M4): reading the file and building the prompt used to sit outside the try in one(). One unreadable
+    # file raised in the writer loop (pool.map) and the whole project was recorded as crashed. A directory
+    # named X.sol used to provoke that; since D-30 select_files skips it (os.path.isfile), so it must not even
+    # count, and the unreadable file is simulated with an open() that denies C.sol.
     repo = tmp_path / "repo"
     repo.mkdir()
     (repo / "Dir.sol").mkdir()
     (repo / "A.sol").write_text("contract A {\n  function f() public {}\n}\n", encoding="utf-8")
     (repo / "B.sol").write_text("contract B {}\n", encoding="utf-8")
+    (repo / "C.sol").write_text("contract C {}\n", encoding="utf-8")
+    real_open = io.open
+
+    def open_or_deny(p, *a, **kw):
+        if str(p).endswith("C.sol"):
+            raise PermissionError(13, "denied", str(p))
+        return real_open(p, *a, **kw)
+    monkeypatch.setattr(attacktrail_cli.io, "open", open_or_deny)
     good = {"title": "t", "line": 2, "code_excerpt": "function f() public {}", "category": "access",
             "severity_guess": "High", "why": "anyone can call", "poc_sketch": ""}
     monkeypatch.setattr(attacktrail_cli, "claude_bin", lambda: "claude")
@@ -204,10 +214,10 @@ def test_cli_agent_unreadable_files_fail_only_that_file(tmp_path, monkeypatch):
         Scope("p", repo), RunContext(run_dir=tmp_path, project_dir=pdir, timeout_s=60, env={}))
     assert res.meta.status == "ok", res.meta.error
     assert [(f.file, f.lines) for f in res.vulnerabilities] == [("A.sol", [2])]    # the other files still ran
-    assert (res.meta.files_total, res.meta.files_scanned, res.meta.files_failed) == (3, 2, 1)
-    assert res.meta.error.startswith("1 of 3 files not scanned: 1 failed, 0 skipped; failed files: Dir.sol (")
+    assert (res.meta.files_total, res.meta.files_scanned, res.meta.files_failed) == (3, 2, 1)   # Dir.sol not a candidate
+    assert res.meta.error.startswith("1 of 3 files not scanned: 1 failed, 0 skipped; failed files: C.sol (")
     log = (pdir / "raw" / "scan.stdout.txt").read_text(encoding="utf-8")
-    assert "Dir.sol  ERROR " in log and "A.sol  후보 1" in log and "B.sol  후보 0" in log
+    assert "C.sol  ERROR " in log and "A.sol  후보 1" in log and "B.sol  후보 0" in log and "Dir.sol" not in log
 
 
 def test_cli_usage_rows_keep_input_tokens_as_the_sum_and_add_the_raw_kinds(tmp_path, monkeypatch):

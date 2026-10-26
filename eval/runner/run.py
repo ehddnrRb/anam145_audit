@@ -303,7 +303,7 @@ def _check_logged_opts(run_dir: Path, pids: list[str], opts: dict) -> dict:
 
 
 def rescore(run_dir, agent_name, dataset, projects=None, suite=None, judge="nethermind",
-            judge_model="o4-mini", agent_opts=None) -> Path:
+            judge_model="gpt-5-nano-2025-08-07", agent_opts=None) -> Path:
     """Finish a run whose agent stage completed but scoring did not (e.g. the process was killed).
 
     Re-uses projects/<id>/{checkout,findings}.json and judges only projects that have no
@@ -420,7 +420,7 @@ def _print_summary(run_dirs: list[Path]) -> None:
 
 
 def run(agent_name, dataset, out_dir, projects=None, suite=None, repeat=1, jobs=2, timeout_s=None,
-        judge="nethermind", judge_model="o4-mini", agent_opts=None, allow_holdout=False) -> Path:
+        judge="nethermind", judge_model="gpt-5-nano-2025-08-07", agent_opts=None, allow_holdout=False) -> Path:
     """timeout_s: project timeout in seconds; None means the agent's default_timeout_s (D-24)."""
     if judge not in ("nethermind", "mock"):
         raise ValueError(f"unknown judge: {judge!r}")

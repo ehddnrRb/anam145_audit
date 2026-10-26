@@ -161,7 +161,7 @@ def _is_high(t: dict) -> bool:
 
 
 def evaluate(run_dir: Path, scan_source: str, project_ids: list[str], judge: str = "nethermind",
-             model: str = "o4-mini", batch_size: int = 10, only_missing: bool = False) -> ScoreResult:
+             model: str = "gpt-5-nano-2025-08-07", batch_size: int = 10, only_missing: bool = False) -> ScoreResult:
     """only_missing: judge only projects without scoring_output/<id>_results.json (rescore after a crash);
     stats are still computed for every project id."""
     run_dir = Path(run_dir).resolve()

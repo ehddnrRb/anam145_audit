@@ -93,7 +93,7 @@ eval/ 에서 실행한다. Windows 는 `.\eval.cmd`, POSIX 셸(Git Bash 포함)�
 | `--jobs` | 2 | 프로젝트 병렬 수 |
 | `--timeout` | 에이전트 기본값 | 프로젝트당 에이전트 제한 시간(초). 생략하면 `attacktrail` 10800, 그 밖 1800 (D-24) |
 | `--judge` | nethermind | `mock` 은 배관 테스트 전용. 아래 참고 |
-| `--judge-model` | o4-mini (OpenAI 가 2026-10-24 에 폐기해 404 가 난다. 기본값 변경 예정, DECISIONS D-30) | 채점기 `MODEL` |
+| `--judge-model` | gpt-5-nano-2025-08-07 (o4-mini 는 2026-10-24 에 폐기됨. D-31 에서 변경) | 채점기 `MODEL` |
 | `--baseline-mode` | precomputed | `precomputed` 는 upstream 이 커밋해 둔 GPT-5 결과 파일을 읽는다. 네트워크·키 불필요 |
 | `--model` | 에이전트 기본값 | 에이전트에 넘길 모델. AttackTrail 은 `claude-fable-5-1` (`claude-sonnet-5-5`, `claude-opus-5-5` 도 된다) |
 | `--effort` | scan.py 기본값(`xhigh`) | `output_config.effort`. `high`·`xhigh`·`max`. `--agent attacktrail` 에서만 쓸 수 있다 |

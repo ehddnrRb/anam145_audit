@@ -2520,7 +2520,7 @@ exp3 두 run 의 kinetiq `files_total` 25 와 `files_failed` 8 은 수정 전 �
 
 2026-10-24 OpenAI 가 `o4-mini` 를 폐기해(404 deprecated) exp3 두 run 의 채점 호출이 전부 실패했다. 두 manifest 의 `truths_unevaluated` 가 kinetiq 25, cork 18, next-generation 14 로 합 57 이고 정답 57건이 전부 미평가다. `judge_incomplete` 가 true 로 켜졌다. D-28 §9 에서 만든 경고가 실제로 동작한 첫 사례다. 지표(recall)는 이 run 에서 의미가 없다.
 
-채점기 `SUPPORTED_MODELS` 중 가용은 `gpt-5-nano-2025-08-07`, `gpt-5-2025-08-07`, `o3-2025-04-16` 이고 `o4-mini`, `gpt-4.1-nano-2025-04-14` 는 폐기됐다(2026-10-25 확인). 재채점은 사본 `runs/exp3-fable-max-nm2`, `runs/exp3-opus-max-nm2` 에서 진행한다. judge 모델은 사용자 결정을 기다린다. `--judge-model` 기본값 `o4-mini` 는 README 에 "폐기됨, 변경 예정"으로 적었고 `cli.py` 기본값 변경은 다음 작업이다.
+채점기 `SUPPORTED_MODELS` 중 가용은 `gpt-5-nano-2025-08-07`, `gpt-5-2025-08-07`, `o3-2025-04-16` 이고 `o4-mini`, `gpt-4.1-nano-2025-04-14` 는 폐기됐다(2026-10-25 확인). 재채점은 사본 `runs/exp3-fable-max-nm2`, `runs/exp3-opus-max-nm2` 에서 진행한다. judge 모델은 사용자 결정을 기다린다. `--judge-model` 기본값 `o4-mini` 는 README 에 "폐기됨, 변경 예정"으로 적었고 `cli.py` 기본값 변경은 다음 작업이다(D-31 에서 했다).
 
 ### 7. 검증
 
@@ -2535,9 +2535,125 @@ exp3 두 run 의 kinetiq `files_total` 25 와 `files_failed` 8 은 수정 전 �
 - 안 보는 것은 D-26 과 같다(대문자 폴더, 접두 일치, 파일 이름 패턴).
 - `broadcast/` 폴더 자체는 제외하지 않았다. 안에 `.sol` 파일이 들어 있는 저장소가 있으면 선택된다. 29개에서는 없었다.
 
+## D-31. judge 기본값을 gpt-5-nano-2025-08-07 로 바꾸고 exp3 와 secondswap 을 재채점 (2026-10-26)
+
+범위는 `--judge-model` 기본값(`cli.py` 두 곳, `runner/run.py` 두 곳, `scoring/nethermind.py`), 시험 한 줄과 §8 의 시험 2건, README 표 한 줄, 이 문서다. `datasets/scabench/README.md` 는 상류 서브모듈이라 손대지 않았다. 그 안의 `MODEL=o4-mini` 예시(142·212·268·311·356·406행)는 그대로 실행하면 404 가 나고, 우리 CLI 는 `--judge-model` 로 모델을 넘기므로 영향이 없다. 스캔 호출은 없다. 채점 호출만 OpenAI 에 나갔다. `call_shape` 는 바꾸지 않았다. judge 모델은 manifest 의 `judge.model` 에 이미 기록되는 "값만 바뀌는 옵션"이라서 D-28 의 규칙대로 지문을 올리지 않는다.
+
+### 1. 결정
+
+judge 기본값은 `gpt-5-nano-2025-08-07` 이다(사용자 결정 2026-10-25). 채점기 `SUPPORTED_MODELS` 중 가용은 `gpt-5-nano-2025-08-07`, `gpt-5-2025-08-07`, `o3-2025-04-16` 이고 `o4-mini`, `gpt-4.1-nano-2025-04-14` 는 폐기됐다(D-30 §6).
+
+앞으로의 비교는 전부 gpt-5-nano 기준이다. D-28, D-29 의 o4-mini 수치는 역사 기록으로 두고 gpt-5-nano 수치와 서로 비교하지 않는다. judge 가 다르면 비교할 수 없다(§4 해석 1).
+
+### 2. 재채점 방법
+
+원본 run 의 사본을 만들고(2026-10-25 13:36 `Copy-Item`, 채점 산출물은 제거) 아래 형태로 재채점했다. model, effort, max_tokens 는 `_run` 행에서 채택했다(D-28 §rescore 대조).
+
+```
+cli.py rescore runs\<사본> --agent attacktrail --dataset scabench --projects <id> --judge nethermind --judge-model gpt-5-nano-2025-08-07
+```
+
+| 구분 | 사본 | 원본 |
+|---|---|---|
+| exp3 | `runs\exp3-fable-max-nm2`, `runs\exp3-opus-max-nm2` | `exp3-fable-max`, `exp3-opus-max` |
+| secondswap 12건 | `runs\g5n-*` | `pilot-secondswap-fable-nm`(36파일), `pilot-secondswap-fable-d26-nm`, `fable-5-1-d26-rep3\rep-1..3`(xhigh), `fable-5-1-d26-max-rep3\rep-1..3`, `cmp-opus-5-5-d26`, `cmp-opus-5-5-d26-max`, `cmp-sonnet-5-5-d26`, `cmp-haiku-5-5-d26` |
+
+rep3 의 o4-mini 비교값은 `fable-5-1-d26-rep3-r3nm` 에서 가져왔다.
+
+실행은 분리 PowerShell 프로세스 `%TEMP%\at_logs\rescore_g5n.ps1` 이 했다. 2026-10-25 13:36:16 에 시작해 2026-10-26 16:32:09 에 끝났다. 14건 전부 exit 0, `truths_unevaluated` 는 전부 0, `judge_incomplete` 는 없다.
+
+소요 시간(상태 파일의 start·end 차): exp3 Fable 60분(3프로젝트), exp3 Opus 57분, 36파일 run 43분, secondswap 16파일 run 은 정지가 끼지 않은 9건이 13~27분이다. xhigh rep2 는 36분인데 그 안에 17:12:12~17:19:42 의 대기 상태 약 7분이 들어 있고, xhigh rep3 은 아래 정지 사건이 끼어 start·end 차로는 셀 수 없다(정지 구간을 빼면 약 17분). o4-mini 와의 비교는 같은 run 의 기록이 하나 있다. `cmp-sonnet-5-5-d26` 의 o4-mini 재채점이 2026-10-22 배치에서 8분50초(16:32:54~16:41:44)였고 gpt-5-nano 는 16분49초라 1.9배다. OpenAI 채점 비용은 별도 계정이라 집계하지 않았다.
+
+정지 사건. 배치 중 PC 가 Modern Standby(이벤트 Kernel-Power 506 진입, 507 복귀)에 세 번 들어갔다. 2026-10-25 17:12:12~17:19:42(xhigh rep2 중), 17:53:42~17:58:20(xhigh rep3 중), 17:58:20~2026-10-26 14:05:14(xhigh rep3 중, 20시간 7분). 스크립트의 `SetThreadExecutionState` 절전 방지가 켜져 있었는데도 들어갔으므로 이 호출이 막는 것은 유휴 절전뿐이고 전원 버튼이나 덮개 닫힘으로 드는 대기 상태는 못 막는다고 본다(Windows 동작은 문서로 대조하지 않았다). 프로세스는 죽지 않았고 깨어난 뒤 이어서 끝났다.
+
+### 3. 표 A. exp3 확장 3프로젝트 (gpt-5-nano, max_tokens 128000, 1회)
+
+Fable 5.1 max:
+
+| 프로젝트 | 정답 | 스캔 | 실패 | 정확 | 부분 | FP | FN | recall | precision | high |
+|---|---|---|---|---|---|---|---|---|---|---|
+| kinetiq | 25 | 17/25 | 8 | 8 | 2 | 26 | 17 | 0.320 | 0.235 | 2/3 |
+| cork | 18 | 20/44 | 4 | 9 | 0 | 14 | 9 | 0.500 | 0.391 | 6/11 |
+| next-generation | 14 | 8/8 | 0 | 8 | 0 | 18 | 6 | 0.571 | 0.308 | 1/1 |
+| 합산 | 57 | | | 25 | 2 | 58 | 32 | 0.439 (관대 0.474) | 0.301 | 9/15 |
+
+kinetiq 의 실패 8은 D-30 이전 `out/*.sol/` 디렉터리 오탐이다. cork 의 건너뜀 20은 `time budget reached`(소프트 한도 소진)이고 실패 4는 스트림 끊김(`peer closed connection`) 3건과 hard deadline 1건이다(프로젝트 wall 65,089.7초). 이 스캔은 2026-10-23 05:34~10-24 00:11(UTC)에 돌았으므로 위 정지 사건과는 다른 일이고, 재채점은 스캔을 다시 하지 않는다. 폴백 1건(`hardhat.config.ts` -> `claude-opus-4-8`)이 있다. 후보 수는 50/50/48 이다.
+
+Opus 5.5 max:
+
+| 프로젝트 | 스캔 | 정확 | 부분 | FP | FN | recall | precision | high |
+|---|---|---|---|---|---|---|---|---|
+| kinetiq | 17/25 | 8 | 1 | 15 | 17 | 0.320 | 0.348 | 2/3 |
+| cork | 43/44 (실패 1) | 15 | 2 | 29 | 3 | 0.833 | 0.341 | 10/11 |
+| next-generation | 8/8 (폴백 2건 -> `claude-opus-4-8`) | 7 | 0 | 16 | 7 | 0.500 | 0.304 | 1/1 |
+| 합산 | | 30 | 3 | 60 | 27 | 0.526 (관대 0.579) | 0.333 | 13/15 |
+
+후보 수는 30/68/28 이다. cork 는 Fable 이 20/44, Opus 가 43/44 를 스캔해서 직접 비교할 수 없다. kinetiq 는 둘 다 17파일이다.
+
+### 4. 표 B. secondswap 16파일 (정답 30, high 3), gpt-5-nano 대 o4-mini
+
+열은 정확/부분/FP/FN/recall/관대/precision/high 순이다.
+
+| run | judge | 정확 | 부분 | FP | FN | recall | 관대 | precision | high |
+|---|---|---|---|---|---|---|---|---|---|
+| pilot 36파일 xhigh 64000 | g5n | 14 | 3 | 19 | 16 | 0.467 | 0.567 | 0.424 | 3 |
+| | o4 | 9 | 1 | 21 | 21 | 0.300 | 0.333 | 0.300 | 1 |
+| pilot d26 xhigh | g5n | 15 | 0 | 5 | 15 | 0.500 | 0.500 | 0.750 | 3 |
+| | o4 | 7 | 3 | 11 | 23 | 0.233 | 0.333 | 0.389 | 1 |
+| Fable xhigh rep1 | g5n | 14 | 1 | 9 | 16 | 0.467 | 0.500 | 0.609 | 3 |
+| | o4 | 12 | 1 | 10 | 18 | 0.400 | 0.433 | 0.545 | 2 |
+| Fable xhigh rep2 | g5n | 15 | 2 | 11 | 15 | 0.500 | 0.567 | 0.577 | 2 |
+| | o4 | 10 | 3 | 13 | 20 | 0.333 | 0.433 | 0.435 | 1 |
+| Fable xhigh rep3 | g5n | 14 | 1 | 5 | 16 | 0.467 | 0.500 | 0.737 | 2 |
+| | o4 (r3nm) | 7 | 5 | 11 | 23 | 0.233 | 0.400 | 0.389 | 1 |
+| Fable max rep1 (128000) | g5n | 18 | 3 | 14 | 12 | 0.600 | 0.700 | 0.562 | 2 |
+| | o4 | 17 | 0 | 12 | 13 | 0.567 | 0.567 | 0.586 | 3 |
+| Fable max rep2 | g5n | 17 | 1 | 9 | 13 | 0.567 | 0.600 | 0.654 | 2 |
+| | o4 | 12 | 0 | 13 | 18 | 0.400 | 0.400 | 0.480 | 1 |
+| Fable max rep3 | g5n | 15 | 1 | 13 | 15 | 0.500 | 0.533 | 0.536 | 3 |
+| | o4 | 10 | 2 | 17 | 20 | 0.333 | 0.400 | 0.370 | 2 |
+| Opus xhigh | g5n | 9 | 0 | 5 | 21 | 0.300 | 0.300 | 0.643 | 2 |
+| | o4 | 8 | 0 | 6 | 22 | 0.267 | 0.267 | 0.571 | 2 |
+| Opus max | g5n | 16 | 1 | 7 | 14 | 0.533 | 0.567 | 0.696 | 3 |
+| | o4 | 10 | 2 | 11 | 20 | 0.333 | 0.400 | 0.476 | 2 |
+| Sonnet high | g5n | 9 | 3 | 7 | 21 | 0.300 | 0.400 | 0.562 | 1 |
+| | o4 | 6 | 2 | 9 | 24 | 0.200 | 0.267 | 0.400 | 1 |
+| Haiku high | g5n | 12 | 0 | 14 | 18 | 0.400 | 0.400 | 0.462 | 2 |
+| | o4 | 5 | 1 | 21 | 25 | 0.167 | 0.200 | 0.192 | 1 |
+
+평균(표본 표준편차). gpt-5-nano 는 Fable xhigh 정확 14.33(0.58), recall 0.48(0.02), precision 0.64(0.08)이고 Fable max 정확 16.67(1.53), recall 0.56(0.05), precision 0.58(0.06)이다. o4-mini 는 xhigh 정확 9.67(2.52), max 13.0(3.61)이다.
+
+표의 `64000` 가운데 pilot 두 run, Fable xhigh rep1~3, Opus xhigh, Sonnet, Haiku 는 D-28 이전 코드로 돌아 원본 manifest 에 `max_tokens` 가 없다. 당시 scan.py 기본값이 64000 이었으므로 그렇게 적었고, 기록된 값은 아니다.
+
+### 5. 해석
+
+1. 같은 스캔 결과에서 gpt-5-nano 는 o4-mini 보다 정확 일치를 1~8건 더 준다. 12건 전부 증가했다. judge 변경 효과가 모델·effort 차이와 같은 크기라서 두 judge 의 수치를 섞어 비교하면 안 된다.
+2. gpt-5-nano 기준 rep 간 정확 일치 sd 는 o4-mini 의 0.23~0.42배다(xhigh 0.58 대 2.52, max 1.53 대 3.61). rep 마다 scan 도 다르므로 이 sd 에는 scan 차이와 채점 차이가 섞여 있고, n=3 이라 어느 쪽이 얼마인지는 가르지 못한다. D-29 의 "편차가 모델 간 차이와 같은 크기라 확정 불가" 결론은 gpt-5-nano 기준으로 다시 봐야 한다는 뜻이지, 그 편차가 채점기 탓이라고 확정하는 것은 아니다.
+3. effort 효과는 같은 방향이다. secondswap 에서 Fable max 16.67 대 xhigh 14.33(3회씩), Opus max 16 대 xhigh 9(1회씩). 두 설정은 `max_tokens` 도 64000 대 128000 으로 달라 effort 효과만 분리하지는 못한다(D-29 §9 와 같은 한계).
+4. 정답 합산 recall(secondswap 30 + exp3 57 = 87건, secondswap 은 Fable max 3회 평균 16.67 사용)은 Fable max 0.479, Opus max 0.529 다(Opus 는 secondswap 1회 16). cork 파일 집합이 20 대 43 으로 달라서 Opus 우위는 확정하지 않는다. cork Fable max 재실행(추정 약 $30)은 미결정이다.
+5. 지원 밖 정답(D-27) 집계는 변하지 않는다.
+
+### 6. 비용
+
+exp3 Fable max $33.25, exp3 Opus max $40.12 다(둘 다 `scan.jsonl` usage 로 손계산했고 manifest `cost_usd` 는 null). 누적 Anthropic 지출은 $153.80 / 상한 $200 이다(10-23 $80.43 + 73.37). 키는 2026-10-28 에 만료된다.
+
+### 7. 한계와 다음 작업
+
+- `_judge_incomplete` 는 매칭 소진과 judge 실패를 구분하지 못한다(D-28 한계 유지).
+- cork Fable max 는 부분 결과다. 재실행 여부는 사용자 결정이다.
+- secondswap 의 o4-mini 값은 역사 기록용이다.
+- judge 시간이 o4-mini 의 1.9배(같은 run 기록 1건 기준, §2)라서 배치 시간을 잡을 때 반영한다. 비용은 재지 않았다.
+
+### 8. 같이 고친 시험 2건
+
+전체 시험을 돌리니 413건 중 2건이 떨어졌고 둘 다 이 변경 전부터 떨어지던 것이다(`git stash` 로 확인).
+
+- `tests/test_attacktrail_cli.py::test_cli_agent_unreadable_files_fail_only_that_file`: D-20 의 "읽을 수 없는 파일 하나가 프로젝트 전체를 죽이지 않는다"를 디렉터리 `Dir.sol` 로 만들었는데, D-30 이 `select_files` 에서 디렉터리를 아예 빼면서 후보가 2개가 됐다(D-30 뒤 이 시험을 안 돌렸다). 디렉터리는 그대로 두고 후보에서 빠지는지 확인하고, 읽기 실패는 `C.sol` 만 `PermissionError` 를 내는 `io.open` 으로 만든다. 기대값은 그대로 3/2/1 이다.
+- `tests/test_runner.py::test_agent_env_is_scoped`: `agent_env()` 는 D-24 별칭 `ATTACKTRAIL_ANTHROPIC_API_KEY` 를 먼저 읽는데 시험이 `ANTHROPIC_API_KEY` 만 넣어서, 별칭이 사용자 환경에 있는 PC 에서는 실제 키가 나와 떨어졌다. 실패 메시지에 그 키 값이 찍히는 문제도 있었다. 별칭을 시험값으로 넣어 별칭이 이기는 것과, 별칭을 지우면 평키를 쓰는 것을 둘 다 확인한다.
+
 ## 아직 안 된 것
 
-D-30 에서 해결한 것: 디렉터리가 `.sol` 로 끝나는 이름으로 파일 후보에 들던 것(kinetiq 의 `out/*.sol/` 8건 ERROR, lambowin·crestal-network 의 `broadcast/*.s.sol/` 도 같은 증상), 빌드 산출물 폴더(`out artifacts cache build dist typechain typechain-types`)를 비웹 스캔이 보내던 것. 확장 배치의 채점 실패(`o4-mini` 폐기)는 아직 안 풀렸다(아래 표 마지막 행).
+D-30 에서 해결한 것: 디렉터리가 `.sol` 로 끝나는 이름으로 파일 후보에 들던 것(kinetiq 의 `out/*.sol/` 8건 ERROR, lambowin·crestal-network 의 `broadcast/*.s.sol/` 도 같은 증상), 빌드 산출물 폴더(`out artifacts cache build dist typechain typechain-types`)를 비웹 스캔이 보내던 것. 확장 배치의 채점 실패(`o4-mini` 폐기)는 아직 안 풀렸다(아래 표 마지막 행. D-31 에서 재채점으로 풀었다).
 
 D-28 재검증 후 수정(2026-10-23)에서 해결한 것: 문서 쪽 지적(복구 절차 예시, `call_shape` 근거 문장, 비용 문구, `judge_incomplete` 문구, 36 tok/s 산수, 서버 수락 표기, 굵은 글씨). 코드 쪽 5건은 같은 날 뒤따른 작업('코드 수정 후속')에서 해결해서 맨 끝 네 행을 이 문단으로 옮겼다. `eval rescore` 가 원래 run 의 `_run` 행과 인자를 대조하고 안 준 값을 채운다(1). `call_shape` 주석을 새 규칙으로 고치고 `compare` 가 model, effort, max_tokens, call_shape 차이를 경고한다(2). `judge_incomplete` 에 `n_findings > 0` 조건을 더하고 줄 문구를 '채점 로그 확인' 으로 바꿨다(4). attacktrail.py 의 36 tok/s 주석을 두 경우(4개, 8개)로 고쳤다(5). `SOFT_MARGIN_S` 와 주석에 64000 기준값임을 밝혔다(7). 남은 것은 아래 행에 따로 적었다(`compare` 의 `prompt_sha256`·파일 집합, 매칭 소진 구분, 모델·effort 비교의 표본 크기). effort max, 128000 실행 행은 D-29 로 갱신했다. D-29 에서 해결한 것: effort `max` 와 `max_tokens` 128000 의 서버 수락(Fable 5.1, Opus 5.5 둘 다), Fable max 3회와 Opus max 1회의 결과 기록.
 
@@ -2603,5 +2719,5 @@ D-20 에서 해결한 것: 호출별 timeout 과 하드 데드라인(D-19 의 �
 | effort max, 128000 실행 (D-28, D-29) | 완료했다(D-29). Fable 5.1 max 3회와 Opus 5.5 max 1회가 채점까지 끝났다. 서버가 effort `max` 와 128000 요청을 받는지는 두 모델 모두 확인됐다(D-29 §5). 결과: Fable 은 xhigh 대비 엄격 recall 0.322 에서 0.433, 비용 2.1배이고 표준편차 때문에 확정은 아니다(D-29 §4). 남은 것: 폴백이 일어났을 때 128000 이 유지되는지(폴백 0 이라 못 봄), Opus 의 128K 한도 직접 확인(최대 62,225 토큰까지만 받음), Opus 반복, 프로젝트 확장 (D-28 §11, D-29 §11) |
 | 채점 불완전을 원인별로 못 가른다 (D-28) | `judge_incomplete`(`truths_unevaluated` > 0 이고 지적 1건 이상)는 judge 호출 실패와 지적 소진을 구별하지 못한다(지적 0건 프로젝트는 D-28 후속에서 제외). 재채점이 필요한지는 `scoring_output/scorer_stdout.log` 의 오류 줄로 본다. 선택 사항이던 로그 줄 수 게이트는 하지 않았다. `compare` 도 이 표시를 경고하지 않는다 (D-28 §9, 후속 4) |
 | 모델·effort 비교의 표본 크기 (D-29) | 프로젝트 1개(secondswap, 정답 30건)에서 Fable 은 effort 당 3회, Opus·Sonnet·Haiku 는 1회다. Fable 의 xhigh 대 max 엄격 recall 차이 0.111 은 표본 표준편차(0.120, 0.084)와 같은 크기이고 Welch p 약 0.27 이라 확정이 아니다. 다음 후보는 다른 scabench 프로젝트 2~3개로 확장하거나 반복을 늘리는 것이고 사용자 결정 대기다. 폴백 시 128000 유지와 Opus 의 128K 한도 직접 확인도 못 했다. xhigh(64000)와 max(128000)는 `max_tokens` 도 달라서 effort 효과만 분리하지도 못했다(영향은 작다고 보지만 추정이다) (D-29 §4, §9, §11) |
-| exp3 재채점과 judge 모델 (D-30) | `o4-mini` 폐기로 exp3 두 run 의 채점이 전부 실패했다(`truths_unevaluated` 57/57, `judge_incomplete`). 사본 `runs/exp3-fable-max-nm2`, `runs/exp3-opus-max-nm2` 에서 재채점할 예정이고 judge 모델(`gpt-5-nano-2025-08-07`, `gpt-5-2025-08-07`, `o3-2025-04-16` 중)은 사용자 결정 대기다. `cli.py` 의 `--judge-model` 기본값 `o4-mini` 변경은 다음 작업이다. 사본 재채점은 수정 전 kinetiq 25개(17개 + 디렉터리 8개) 스캔 결과를 그대로 쓴다 |
+| exp3 재채점과 judge 모델 (D-30, D-31) | 해결(D-31). judge 는 `gpt-5-nano-2025-08-07` 로 결정했고(2026-10-25) `--judge-model` 기본값을 바꿨다. exp3 두 run 과 secondswap 12건을 재채점했다. 남은 것: cork Fable max 는 부분 결과(스캔 20/44)라 재실행 여부가 사용자 결정이다. 사본 재채점은 수정 전 kinetiq 25개(17개 + 디렉터리 8개) 스캔 결과를 그대로 쓴다 |
 | 빌드 산출물 폴더 이름 규칙의 범위 (D-30) | 이름만 보므로 `build`, `cache`, `out` 이 실제 소스 폴더인 저장소는 소스까지 빠진다. 29개에서는 morph-l2 `build/lint.go` 1개였고 `--web` 은 0개다. 29개 밖과 웹 대상은 검증하지 못했다. `broadcast/` 는 제외하지 않았다 |

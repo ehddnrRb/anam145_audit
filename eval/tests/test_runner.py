@@ -115,8 +115,12 @@ def test_agent_env_is_scoped(monkeypatch):
     monkeypatch.setenv("OPENAI_API_KEY", "o-test")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "a-test")
     monkeypatch.setenv("SOMETHING_ELSE", "1")
+    monkeypatch.setenv("ATTACKTRAIL_ANTHROPIC_API_KEY", "alias-test")   # D-24 alias wins over the plain key
     env = agent_env("attacktrail")
-    assert env.get("ANTHROPIC_API_KEY") == "a-test" and "OPENAI_API_KEY" not in env and "SOMETHING_ELSE" not in env
+    assert env.get("ANTHROPIC_API_KEY") == "alias-test" and "OPENAI_API_KEY" not in env and "SOMETHING_ELSE" not in env
+    assert "ATTACKTRAIL_ANTHROPIC_API_KEY" not in env
+    monkeypatch.delenv("ATTACKTRAIL_ANTHROPIC_API_KEY")                  # without the alias the plain key is used
+    assert agent_env("attacktrail").get("ANTHROPIC_API_KEY") == "a-test"
 
 
 def test_executor_env_and_timeout():

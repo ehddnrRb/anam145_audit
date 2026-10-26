@@ -65,7 +65,7 @@ def test_run_args_passed_through(fake_run, tmp_path):
 def test_run_defaults(fake_run, tmp_path):
     cli.main(["run", "--agent", "attacktrail", "--dataset", "scabench", "--out", str(tmp_path)])
     (_, kw), = fake_run
-    assert kw["judge"] == "nethermind" and kw["judge_model"] == "o4-mini"
+    assert kw["judge"] == "nethermind" and kw["judge_model"] == "gpt-5-nano-2025-08-07"
     # D-24: no --timeout means "the agent's default" (attacktrail 10800 s, others 1800 s), resolved in the runner
     assert (kw["repeat"], kw["jobs"], kw["timeout_s"]) == (1, 2, None)
     assert kw["projects"] is None and kw["agent_opts"] == {}

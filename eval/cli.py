@@ -44,7 +44,7 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--timeout", type=int, default=None,
                    help="프로젝트당 에이전트 제한 시간(초). 생략하면 에이전트 기본값: attacktrail 10800, 그 밖 1800 (D-24)")
     r.add_argument("--judge", choices=["nethermind", "mock"], default="nethermind")
-    r.add_argument("--judge-model", default="o4-mini")
+    r.add_argument("--judge-model", default="gpt-5-nano-2025-08-07")
     r.add_argument("--baseline-mode", choices=["precomputed", "live"], default=None)
     r.add_argument("--model", default=None)
     r.add_argument("--effort", choices=EFFORTS, default=None,
@@ -60,7 +60,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--projects", type=lambda s: [x.strip() for x in s.split(",") if x.strip()])
     s.add_argument("--suite")
     s.add_argument("--judge", choices=["nethermind", "mock"], default="nethermind")
-    s.add_argument("--judge-model", default="o4-mini")
+    s.add_argument("--judge-model", default="gpt-5-nano-2025-08-07")
     s.add_argument("--model", default=None, help="manifest 기록용. 원래 run 의 --model 과 같게")
     s.add_argument("--effort", choices=EFFORTS, default=None, help="manifest 기록용. 원래 run 의 --effort 와 같게")
     s.add_argument("--max-tokens", type=_max_tokens, default=None, metavar="N",
