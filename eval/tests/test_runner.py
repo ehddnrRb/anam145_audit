@@ -769,7 +769,7 @@ def test_rescore_takes_the_logged_values_for_arguments_not_given_and_scan_pys_de
     (tmp_path / "bare").mkdir()
     run_mod.rescore(tmp_path / "bare", "attacktrail", "scabench", projects=[EXCLUDED_PID], judge="mock")
     a = agent(tmp_path / "bare")
-    assert (a["effort"], a["max_tokens"]) == ("xhigh", 64000)           # scan.py's own defaults
+    assert (a["effort"], a["max_tokens"]) == ("high", 64000)            # scan.py's own defaults (D-34)
     # the CLI adapter is never checked, whatever sits in raw/: it has no effort or max_tokens to compare
     d = _logged_run(tmp_path / "cli", **LOGGED)
     run_mod.rescore(d, "attacktrail-cli", "scabench", projects=[EXCLUDED_PID], judge="mock")

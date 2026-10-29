@@ -12,6 +12,7 @@ from dataclasses import asdict, is_dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
+from runner import budget
 from runner.checkout import checkout_project, validate_name
 from runner.dataset import EVAL_ROOT, excluded_reason, load_dataset
 from runner.manifest import SCORER_COMMIT, build_manifest, judge_block, scorer_version, write_manifest
@@ -134,8 +135,14 @@ def _single(run_dir: Path, agent, agent_name: str, info: dict, dataset: str, sel
     with ThreadPoolExecutor(max_workers=max(1, jobs)) as pool:
         for rec in pool.map(lambda p: _run_project(p, agent, agent_name, run_dir, timeout_s), todo):
             records[rec["project_id"]] = rec
-    return _score_and_finish(run_dir, agent, agent_name, info, dataset, selected, records, judge, judge_model,
-                             rep, started, timeout_s=timeout_s)
+    try:
+        return _score_and_finish(run_dir, agent, agent_name, info, dataset, selected, records, judge, judge_model,
+                                 rep, started, timeout_s=timeout_s)
+    finally:
+        # D-34: the run's API spend goes on the ledger even when scoring raised (the manifest is written in that
+        # case too); only a failure before the manifest exists leaves nothing to book
+        if (run_dir / "manifest.json").exists():
+            budget.record(run_dir)
 
 
 def _unsupported(selected: list[dict], records: dict[str, dict]) -> dict | None:
@@ -428,6 +435,7 @@ def run(agent_name, dataset, out_dir, projects=None, suite=None, repeat=1, jobs=
         raise RuntimeError("judge 'nethermind' needs OPENAI_API_KEY; not set (nothing was cloned or run)")
     if repeat < 1:
         raise ValueError("repeat must be >= 1")
+    budget.check()  # D-34: refuse to start once the spend ledger has reached the cap
     items, info = load_dataset(dataset, allow_holdout=allow_holdout)
     selected = select_projects(items, projects, suite)
 

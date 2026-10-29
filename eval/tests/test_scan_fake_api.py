@@ -49,7 +49,7 @@ USAGE = {"input_tokens": 10, "cache_creation_input_tokens": 30, "cache_read_inpu
 THINK = {"type": "thinking", "thinking": "", "signature": "sig"}
 
 
-MODEL = "claude-fable-5-1"   # scan.py --model 기본값 (D-24 는 Mythos 5.1, D-25 에서 Fable 5.1). 응답의 model 도 같다. 폴백 응답만 아래 FALLBACK_MODEL
+MODEL = "claude-haiku-5-5"   # scan.py --model 기본값 (D-24 Mythos 5.1 → D-25 Fable 5.1 → D-34 Haiku 5.5). 응답의 model 도 같다. 폴백 응답만 아래 FALLBACK_MODEL
 # _usage.call 의 키. D-25 에서 first_event_s·max_gap_s 가 늘었다
 CALL_KEYS = {"started_at_s", "elapsed_s", "timeout_s", "max_retries", "first_event_s", "max_gap_s"}
 
@@ -391,12 +391,12 @@ def test_request_body_shape(run):
         b = r["body"]
         # D-23: beta 엔드포인트. SDK 는 쿼리 문자열 beta=true 를 붙인다
         assert r["path"] == "/v1/messages?beta=true"
-        # D-24: 스트리밍 호출, max_tokens 64000, 기본 effort xhigh. 기본 모델은 D-25 부터 Fable 5.1
+        # D-24: 스트리밍 호출, max_tokens 64000. 기본 모델·effort 는 D-34 부터 Haiku 5.5·high
         assert b["stream"] is True
         assert b["max_tokens"] == 64000
-        assert b["model"] == "claude-fable-5-1"
-        assert b["fallbacks"] == "default"          # 배열이 아니라 "default" 형태
-        assert b["output_config"]["effort"] == "xhigh"
+        assert b["model"] == "claude-haiku-5-5"
+        assert "fallbacks" not in b                 # D-34: Haiku 5.5 에는 서버 측 폴백이 없어 보내지 않는다
+        assert b["output_config"]["effort"] == "high"
         assert b["output_config"]["format"]["type"] == "json_schema"
         assert b["output_config"]["format"]["schema"]["required"] == ["candidates"]
         role, std = b["system"]
@@ -405,8 +405,8 @@ def test_request_body_shape(run):
         assert "AUD-SEV-01" in std["text"]
         # 안 바꾼 것: thinking 은 보내지 않는다(Fable 5.1·Opus 5.5·Sonnet 5.5 는 항상 켜짐, disabled 는 400), 도구 없음
         assert "thinking" not in b and "tools" not in b and "tool_choice" not in b
-        # "default" 형태의 헤더는 -2026-07-01 하나뿐이다. -2026-06-01 은 배열 형태 전용이고 섞으면 400
-        assert r["headers"]["anthropic-beta"] == "server-side-fallback-2026-07-01"
+        # D-34: Haiku 5.5 는 폴백이 없어 beta 헤더도 안 간다. "default" 형태의 헤더(-2026-07-01)는 다른 모델 시험(아래)에서 본다
+        assert "anthropic-beta" not in r["headers"]
 
 
 def test_traffic_stayed_on_localhost(run):
@@ -429,7 +429,7 @@ def test_default_run_header_records_workers_and_no_budget(run):
 
 def test_default_run_header_records_model_effort_and_fallbacks(run):
     header = run["rows"][0]["_run"]
-    assert (header["model"], header["effort"], header["fallbacks"]) == ("claude-fable-5-1", "xhigh", "default")
+    assert (header["model"], header["effort"], header["fallbacks"]) == ("claude-haiku-5-5", "high", None)
     assert (header["max_tokens"], header["stream"]) == (64000, True)
 
 
@@ -1086,7 +1086,7 @@ def chain_refusal():
 def test_fallback_response_is_read_and_recorded_per_file(tmp_path):
     replies = {"Plain.sol": ok([CAND]), "Fell.sol": fallback_ok([CAND]), "Both.sol": chain_refusal()}
     w = W(tmp_path, replies)
-    r = run_scan(w, replies)
+    r = run_scan(w, replies, args=["--model", "claude-fable-5-1"])   # D-34: 폴백은 Haiku 밖 모델에서만 보낸다
     assert r["rc"] == 0, r["stdout"] + r["stderr"]
     by = {p[2]: p[3] for p in progress(r["stdout"])}
     assert by["Plain.sol"] == by["Fell.sol"] == "후보 1"            # fallback 블록과 빈 thinking 이 앞에 있어도 후보를 읽는다
@@ -1137,11 +1137,12 @@ def test_effort_accepts_only_high_xhigh_and_max(tmp_path, bad):
     assert r.returncode == 2 and "--effort" in r.stderr and "invalid choice" in r.stderr   # 요청은 나가지 않는다
 
 
-def test_model_flag_overrides_the_default_and_xhigh_stays_the_effort_default(tmp_path):
+def test_model_flag_overrides_the_default_and_high_stays_the_effort_default(tmp_path):
     w = W(tmp_path, ["M1.sol"])
     r = run_scan(w, {"M1.sol": ok([CAND])}, args=["--model", "claude-opus-5"])
     assert r["rc"] == 0, r["stdout"] + r["stderr"]
-    assert {(x["body"]["model"], x["body"]["output_config"]["effort"]) for x in r["seen"]} == {("claude-opus-5", "xhigh")}
+    assert {(x["body"]["model"], x["body"]["output_config"]["effort"]) for x in r["seen"]} == {("claude-opus-5", "high")}
+    assert {x["body"]["fallbacks"] for x in r["seen"]} == {"default"}   # D-34: Haiku 가 아니면 폴백은 그대로 간다
 
 
 def test_beta_rejection_400_is_classified_like_any_400_not_fatal(tmp_path):

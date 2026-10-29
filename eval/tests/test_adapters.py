@@ -738,17 +738,17 @@ def test_attacktrail_passes_effort_to_scan_py_only_when_given_and_records_it(tmp
 
 def test_agent_fingerprints_carry_effort_and_api_call_shape_is_v6():
     # effort comes from the argument, else from scan.py's --effort default read out of its source (like the model)
-    # D-24: api-v6 (streaming, max_tokens 64000), default xhigh (the default model is Fable 5.1 since D-25, still api-v6);
-    # the non-web prompt hash is unchanged
+    # D-24: api-v6 (streaming, max_tokens 64000). Defaults: xhigh + Fable 5.1 (D-25) until D-34 made them high + Haiku 5.5
+    # (still api-v6: the call shape did not change); the non-web prompt hash is unchanged
     assert AttackTrailAgent.call_shape == "api-v6"
-    assert AttackTrailAgent().fingerprints()["effort"] == "xhigh" and AttackTrailAgent().effort() == "xhigh"
+    assert AttackTrailAgent().fingerprints()["effort"] == "high" and AttackTrailAgent().effort() == "high"
     assert AttackTrailAgent().fingerprints()["prompt_sha256"][:16] == "2d0bb457ca2c605a"
-    assert AttackTrailAgent(effort="high").fingerprints()["effort"] == "high"
-    assert AttackTrailAgent().model() == "claude-fable-5-1"
+    assert AttackTrailAgent(effort="xhigh").fingerprints()["effort"] == "xhigh"
+    assert AttackTrailAgent().model() == "claude-haiku-5-5"
     assert AttackTrailAgent(model="claude-sonnet-5-5", effort="high").model() == "claude-sonnet-5-5"
     # get_agent passes it through; None is dropped like the other CLI flags
     assert get_agent("attacktrail", effort="high").effort() == "high"
-    assert get_agent("attacktrail", effort=None).effort() == "xhigh"
+    assert get_agent("attacktrail", effort=None).effort() == "high"   # scan.py default (D-34)
 
 
 def test_default_project_timeout_is_per_agent():
