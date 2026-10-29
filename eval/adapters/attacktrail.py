@@ -4,7 +4,7 @@ scan.py is run as `python scan.py <repo> --out <project_dir>/raw/scan.jsonl
 --time-budget S --deadline-s S [--model M] [--effort E] [--max-tokens N] [--web]` and this adapter parses that file.
 (scan.py gained --out, --workers, --time-budget and usage rows in D-19, --deadline-s and the
 consecutive-error breaker in D-20, --effort, server-side fallback and the 5m cache TTL in D-23,
-in D-24 streaming calls, max_tokens 64000 and the xhigh default, and in D-25 the claude-fable-5-1 default model, the
+in D-24 streaming calls, max_tokens 64000 and the xhigh default, in D-25 the claude-fable-5-1 default model (D-34: claude-haiku-5-5 + high), the
 first_event_s / max_gap_s call log and a 1800 s no-data limit; in D-26 the non-web file selection stopped sending
 test, ignition, script(s), deploy and mocks directories; in D-28 --effort accepts max, --max-tokens (1..128000) was added
 and the no-data limit scales with it; its prompt is unchanged.)
@@ -235,13 +235,68 @@ def _usage_rows(path: Path):
                 yield row["_usage"]
 
 
+# $/MTok by model: (input, output, cache write 5m, cache read). D-34 (2026-10-29), from the bundled claude-api skill
+# (model table + per-model sections): Fable 5.1 cache read $0.25; Opus 5.5 and Sonnet 5.5 cache read $0.20; Opus 4.8 / Opus 5
+# (the "default" fallback targets) at the standard multipliers (write 1.25x, read 0.1x). Haiku 5.5 has two rate cards by
+# prompt length: 100K tokens or fewer, and above. The long card's cache rates below are an ASSUMPTION (the standard
+# 1.25x write / 0.1x read multipliers applied to $0.50); the bundled doc only states the $0.50 / $2.50 base rates.
+PRICES = {
+    "claude-fable-5-1": (10.0, 50.0, 12.5, 0.25),
+    "claude-opus-5-5": (4.0, 20.0, 5.0, 0.20),
+    "claude-opus-5": (5.0, 25.0, 6.25, 0.50),
+    "claude-opus-4-8": (5.0, 25.0, 6.25, 0.50),
+    "claude-sonnet-5-5": (2.0, 10.0, 2.5, 0.20),
+    "claude-haiku-5-5": (0.10, 0.50, 0.125, 0.01),
+}
+HAIKU_LONG_PROMPT = 100_000
+PRICES_HAIKU_LONG = (0.50, 2.50, 0.625, 0.05)
+
+
+def row_cost(u: dict) -> float | None:
+    """USD of one API `_usage` row at the row's model, None when the model has no price here or the row is a CLI row.
+
+    The row's four token kinds are per-attempt totals (D-23): after a refusal served by a fallback model the row
+    names the fallback model and its tokens include the refused attempt's input, so that part is priced at the
+    fallback model's rate (a small overstatement for Fable -> Opus 4.8). A partial row holds what the stream had
+    reported, so its cost is a lower bound like its tokens (D-24)."""
+    if "input_tokens_uncached" in u:
+        return None
+    model = u.get("model") or ""
+    price = PRICES.get(model)
+    if price is None:
+        return None
+    tin = u.get("input_tokens") or 0
+    cw = u.get("cache_creation_input_tokens") or 0
+    cr = u.get("cache_read_input_tokens") or 0
+    out = u.get("output_tokens") or 0
+    if model == "claude-haiku-5-5" and tin + cw + cr > HAIKU_LONG_PROMPT:
+        price = PRICES_HAIKU_LONG
+    return (tin * price[0] + out * price[1] + cw * price[2] + cr * price[3]) / 1e6
+
+
+def _rows(source) -> list[dict]:
+    """The `_usage` dicts: a materialized list is returned as is, a path is read once (D-34: the adapter reads the file once)."""
+    return source if isinstance(source, list) else list(_usage_rows(source))
+
+
+def cost_of_rows(source) -> tuple[float | None, int]:
+    """(sum of row_cost over the priced `_usage` rows, number of unpriced rows). The sum is None when no row is priced (D-34).
+
+    An unpriced row (model not in PRICES, or a CLI row) counts $0, so with unpriced > 0 the sum is a lower bound;
+    the adapter notes that in Meta.error and the ledger keeps the row visible. All-or-nothing None would let one
+    unknown model name zero a whole project's spend against the cap."""
+    costs = [row_cost(u) for u in _rows(source)]
+    priced = [c for c in costs if c is not None]
+    return (round(sum(priced), 8) if priced else None), len(costs) - len(priced)
+
+
 def sum_usage(path: Path) -> tuple[int, int] | None:
     """(tokens_in, tokens_out) summed over scan.py's {"_usage": {...}} rows, None if there are none.
 
     scan.py writes one row per file it got a response for, failed parses included
     (refusal, max_tokens), since those calls were billed. tokens_in is every billed input
     kind added up: input_tokens + cache_creation_input_tokens + cache_read_input_tokens.
-    The kinds carry different prices, so cost_usd is not derived from this sum (D-19).
+    The kinds carry different prices, so cost_usd comes from cost_of_rows, not from this sum (D-19, D-34).
     Only a row whose single key is "_usage" counts (see _only). The CLI adapter's rows have
     the same name `input_tokens` for the sum of all three kinds (and `input_tokens_uncached` for
     the raw value); the row says which meaning applies, so this works on both (D-20).
@@ -254,7 +309,7 @@ def sum_usage(path: Path) -> tuple[int, int] | None:
     """
     tin = tout = 0
     seen = False
-    for u in _usage_rows(path):
+    for u in _rows(path):
         seen = True
         if "input_tokens_uncached" in u:  # CLI row: input_tokens is already the sum
             tin += u.get("input_tokens") or 0
@@ -267,7 +322,7 @@ def sum_usage(path: Path) -> tuple[int, int] | None:
 
 def partial_rows(path: Path) -> int:
     """How many `_usage` rows are partial: the stream was cut or broke and the row holds what it had reported (D-24)."""
-    return sum(1 for u in _usage_rows(path) if u.get("partial") is True)
+    return sum(1 for u in _rows(path) if u.get("partial") is True)
 
 
 def fallback_usage(path: Path) -> tuple[int, list[str]] | None:
@@ -282,7 +337,7 @@ def fallback_usage(path: Path) -> tuple[int, list[str]] | None:
     to the fallback model for about an hour); whether it applies across files of a scan is unmeasured, and if
     it does this is larger than the number of refusals.
     """
-    rows = list(_usage_rows(path))
+    rows = _rows(path)
     hit = [u for u in rows if u.get("fallback") is True]
     return (len(hit), sorted({u["model"] for u in hit if u.get("model")})) if rows else None
 
@@ -333,7 +388,8 @@ class AttackTrailAgent(Agent):
     # betas=["server-side-fallback-2026-07-01"] and fallbacks="default", output_config.effort is
     # sent explicitly, and the system block's cache TTL is 5m instead of 1h.
     # api-v6 (D-24): the call streams (client.beta.messages.stream, stream=true on the wire), max_tokens
-    # is 64000 instead of 16000, and the defaults are model claude-fable-5-1 and effort xhigh (D-25 changed
+    # is 64000 instead of 16000, and the defaults were model claude-fable-5-1 and effort xhigh until D-34 (2026-10-29:
+    # claude-haiku-5-5 + high, no fallbacks on Haiku; still api-v6, the call shape is the same) (D-25 changed
     # the model from claude-mythos-5-1, which this account cannot reach; no api-v6 API run predates that, so
     # the v6 label was kept). A
     # streamed call is not cut by an httpx read timeout (which now means "no bytes for a while"): the
@@ -608,18 +664,23 @@ class AttackTrailAgent(Agent):
         if abandoned:  # the abandoned calls were sent and billed but never read, so the token sums are low
             notes.append("%d call(s) still running at the hard deadline were abandoned: no response was read, "
                          "so their tokens are not in tokens_in/tokens_out (undercount)" % abandoned)
-        cut = partial_rows(out)
+        rows = _rows(out)  # D-34: one read of scan.jsonl for the four usage helpers below
+        cut = partial_rows(rows)
         if cut:  # D-24: streams the deadline closed or that broke; their usage rows are what the stream had reported
             notes.append("%d stream(s) ended mid-way (deadline, stall or connection loss): their usage is what the "
                          "stream had reported at message_start, so tokens_out is a lower bound and tokens_in can leave out "
                          "the input of the other attempt (a fallback before the cut)" % cut)
         if skipped:
             notes.append("%d triage candidates dropped for empty why/poc_sketch" % skipped)
-        tokens = sum_usage(out)
-        fb = fallback_usage(out)  # files a fallback model answered (D-23); None: no usage rows, unmeasured
+        tokens = sum_usage(rows)
+        fb = fallback_usage(rows)  # files a fallback model answered (D-23); None: no usage rows, unmeasured
+        cost, unpriced = cost_of_rows(rows)  # D-34
+        if cost is not None and unpriced:  # a mixed scan: the sum is a lower bound. All-unpriced is cost_usd None already
+            notes.append("%d usage row(s) have no price (model not in PRICES): cost_usd leaves them out (lower bound)"
+                         % unpriced)
         return Findings(vulnerabilities=findings, meta=Meta(
             agent=self.name, agent_version=self.version(), model=self.model(),
             tokens_in=tokens[0] if tokens else None, tokens_out=tokens[1] if tokens else None,
-            cost_usd=None,  # prices per token kind are not fixed yet (D-19)
+            cost_usd=cost,  # per-model price table; None when no row is priced (D-34)
             files_fallback=fb[0] if fb else None, fallback_models=fb[1] if fb else None,
             wall_seconds=res.seconds, status="ok", error="; ".join(notes) or None, **cov))

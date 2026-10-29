@@ -1,0 +1,173 @@
+{
+  "run_id": "20261028T071933Z-04bd4a",
+  "started_at": "2026-10-28T04:59:07+00:00",
+  "finished_at": "2026-10-28T07:19:33+00:00",
+  "cli_argv": [
+    "cli.py",
+    "run",
+    "--agent",
+    "attacktrail",
+    "--dataset",
+    "scabench",
+    "--projects",
+    "code4rena_kinetiq_2025_07,code4rena_next-generation_2025_05,code4rena_secondswap_2025_02,sherlock_cork-protocol_2025_01",
+    "--jobs",
+    "1",
+    "--judge",
+    "mock",
+    "--model",
+    "claude-fable-5-1",
+    "--effort",
+    "max",
+    "--max-tokens",
+    "128000",
+    "--timeout",
+    "36000",
+    "--out",
+    "runs\\all4-fable-max-rep4"
+  ],
+  "dataset": {
+    "name": "scabench",
+    "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\scabench\\datasets\\curated-2025-08-18\\curated-2025-08-18.json",
+    "sha": "eec0020939a47bbc06a98a7348a90908b96f4b4d"
+  },
+  "holdout_used": false,
+  "agent": {
+    "name": "attacktrail",
+    "version": "01eed1d5250c73dae1fb41423d116c4dcd39fff8-dirty",
+    "model": "claude-fable-5-1",
+    "prompt_hash": "8cc6c8b5bb45178a013d97d37a3c06f9808165563a9405eb648ab2bf8c8af99d",
+    "scan_py_sha256": "ad2ae93e1d34a9f0cf9481855a1e2458b770439da91ddfb7807bbbdfc5bd1915",
+    "prompt_sha256": "2d0bb457ca2c605a07cbd6d12469ba61236859556a7fc79056d20c069a00929f",
+    "call_shape": "api-v6",
+    "effort": "max",
+    "max_tokens": 128000,
+    "fingerprint_source": "snapshot",
+    "snapshot_dir": "agent_snapshot",
+    "timeout_s": 36000
+  },
+  "judge": {
+    "kind": "mock",
+    "scorer_package": "scoring-algo",
+    "scorer_version": "0.1.0",
+    "scorer_commit": "a62a15d1ea254158dd5cda4bea8ce8cf5791fb27",
+    "model": "mock",
+    "batch_size": 10,
+    "iterations": 3
+  },
+  "executor": "local",
+  "platform": "Windows-11-10.0.26200-SP0 python 3.12.10",
+  "repeat": {
+    "index": 1,
+    "of": 1
+  },
+  "projects": [
+    {
+      "project_id": "code4rena_kinetiq_2025_07",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_kinetiq_2025_07",
+        "head": "7f29c917c09341672e73be2f7917edf920ea2adb",
+        "seconds": 0.094,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 708.125,
+      "tokens_in": 146009,
+      "tokens_out": 177454,
+      "cost_usd": null,
+      "n_findings": 49,
+      "files_total": 17,
+      "files_scanned": 17,
+      "files_failed": 0,
+      "files_skipped": 0,
+      "files_fallback": 1,
+      "fallback_models": [
+        "claude-opus-4-8"
+      ]
+    },
+    {
+      "project_id": "code4rena_next-generation_2025_05",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_next-generation_2025_05",
+        "head": "499cfa50a56126c0c3c6caa30808d79f82d31e34",
+        "seconds": 0.078,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": "4 of 8 files not scanned: 4 failed, 0 skipped; failed files: contracts/ERC20AdminUpgradeable.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/ERC20ControlerMinterUpgradeable.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/ERC20MetaTxUpgradeable.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ), contracts/FeesHandlerUpgradeable.sol (stream interrupted: RemoteProtocolError: peer closed connection without sending ); 4 stream(s) ended mid-way (deadline, stall or connection loss): their usage is what the stream had reported at message_start, so tokens_out is a lower bound and tokens_in can leave out the input of the other attempt (a fallback before the cut)",
+      "wall_seconds": 4757.110000000044,
+      "tokens_in": 59119,
+      "tokens_out": 91865,
+      "cost_usd": null,
+      "n_findings": 23,
+      "files_total": 8,
+      "files_scanned": 4,
+      "files_failed": 4,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    },
+    {
+      "project_id": "code4rena_secondswap_2025_02",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\code4rena_secondswap_2025_02",
+        "head": "214849c3517eb26b31fe194bceae65cb0f52d2c0",
+        "seconds": 0.141,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 666.6560000000172,
+      "tokens_in": 121185,
+      "tokens_out": 212700,
+      "cost_usd": null,
+      "n_findings": 50,
+      "files_total": 16,
+      "files_scanned": 16,
+      "files_failed": 0,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    },
+    {
+      "project_id": "sherlock_cork-protocol_2025_01",
+      "excluded_reason": null,
+      "checkout": {
+        "status": "ok",
+        "path": "C:\\Users\\정동욱\\anam_audit\\eval\\datasets\\sources\\sherlock_cork-protocol_2025_01",
+        "head": "d4fcdd524deb5d07a7ccfd6eb49ba5157ed42642",
+        "seconds": 0.094,
+        "unshallowed": false,
+        "error": null,
+        "pinned": true
+      },
+      "agent_status": "ok",
+      "agent_error": null,
+      "wall_seconds": 2291.3439999999828,
+      "tokens_in": 321410,
+      "tokens_out": 615848,
+      "cost_usd": null,
+      "n_findings": 124,
+      "files_total": 44,
+      "files_scanned": 44,
+      "files_failed": 0,
+      "files_skipped": 0,
+      "files_fallback": 0,
+      "fallback_models": []
+    }
+  ],
+  "denominators_note": "Metric denominators include only projects whose checkout succeeded and whose agent_status is ok. Projects excluded by the dataset (excluded_reason), failed checkouts and crashed/timed-out agents are listed in projects[] with their reason and are not counted. Projects with agent_status no_files (the scanner found no file in its supported languages) are not counted either, but they are a tool limit, not a failure: their truths and the Recall with those truths counted as misses are in `unsupported` (here and in scores.json)."
+}

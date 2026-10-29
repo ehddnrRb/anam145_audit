@@ -132,12 +132,12 @@ def test_cli_follows_the_scan_py_model_default_and_sends_no_effort_or_fallback(t
     # like the API adapter's default. `claude -p` gets --model only: no effort, no server-side fallback. The manifest
     # says "n/a" for effort (the API adapter records xhigh) and the fallback counts stay None (not measured).
     agent = AttackTrailCLIAgent()
-    assert agent.model() == AttackTrailAgent().model() == "claude-fable-5-1"
+    assert agent.model() == AttackTrailAgent().model() == "claude-haiku-5-5"   # scan.py default (D-34)
     argv = attacktrail_cli.cli_argv("claude", agent.model(), "SYS", {})
-    assert argv[argv.index("--model") + 1] == "claude-fable-5-1"
+    assert argv[argv.index("--model") + 1] == "claude-haiku-5-5"
     assert not [a for a in argv if "effort" in a or "fallback" in a]
     assert agent.fingerprints()["effort"] == "n/a"
-    assert AttackTrailAgent().fingerprints()["effort"] == "xhigh"            # scan.py's --effort default
+    assert AttackTrailAgent().fingerprints()["effort"] == "high"             # scan.py's --effort default (D-34)
     assert AttackTrailAgent(effort="high").fingerprints()["effort"] == "high"
 
     repo = tmp_path / "repo"
@@ -146,7 +146,7 @@ def test_cli_follows_the_scan_py_model_default_and_sends_no_effort_or_fallback(t
     monkeypatch.setattr(attacktrail_cli, "claude_bin", lambda: "claude")
     monkeypatch.setattr(attacktrail_cli, "call_claude", _fake_claude({"A.sol": []}))
     res = agent.run(Scope("p", repo), RunContext(run_dir=tmp_path, project_dir=tmp_path / "o", timeout_s=60, env={}))
-    assert res.meta.model == "claude-fable-5-1"
+    assert res.meta.model == "claude-haiku-5-5"
     assert (res.meta.files_fallback, res.meta.fallback_models) == (None, None)
 
 
