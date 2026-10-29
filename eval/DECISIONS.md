@@ -2630,7 +2630,7 @@ Opus 5.5 max:
 1. 같은 스캔 결과에서 gpt-5-nano 는 o4-mini 보다 정확 일치를 1~8건 더 준다. 12건 전부 증가했다. judge 변경 효과가 모델·effort 차이와 같은 크기라서 두 judge 의 수치를 섞어 비교하면 안 된다.
 2. gpt-5-nano 기준 rep 간 정확 일치 sd 는 o4-mini 의 0.23~0.42배다(xhigh 0.58 대 2.52, max 1.53 대 3.61). rep 마다 scan 도 다르므로 이 sd 에는 scan 차이와 채점 차이가 섞여 있고, n=3 이라 어느 쪽이 얼마인지는 가르지 못한다. D-29 의 "편차가 모델 간 차이와 같은 크기라 확정 불가" 결론은 gpt-5-nano 기준으로 다시 봐야 한다는 뜻이지, 그 편차가 채점기 탓이라고 확정하는 것은 아니다.
 3. effort 효과는 같은 방향이다. secondswap 에서 Fable max 16.67 대 xhigh 14.33(3회씩), Opus max 16 대 xhigh 9(1회씩). 두 설정은 `max_tokens` 도 64000 대 128000 으로 달라 effort 효과만 분리하지는 못한다(D-29 §9 와 같은 한계).
-4. 정답 합산 recall(secondswap 30 + exp3 57 = 87건, secondswap 은 Fable max 3회 평균 16.67 사용)은 Fable max 0.479, Opus max 0.529 다(Opus 는 secondswap 1회 16). cork 파일 집합이 20 대 43 으로 달라서 Opus 우위는 확정하지 않는다. cork Fable max 재실행(추정 약 $30)은 미결정이다.
+4. 정답 합산 recall(secondswap 30 + exp3 57 = 87건, secondswap 은 Fable max 3회 평균 16.67 사용)은 Fable max 0.479, Opus max 0.529 다(Opus 는 secondswap 1회 16). cork 파일 집합이 20 대 43 으로 달라서 Opus 우위는 확정하지 않는다. cork Fable max 재실행(추정 약 $30)은 미결정이다(2026-10-28 에 재실행했다. D-32. 채점은 미완).
 5. 지원 밖 정답(D-27) 집계는 변하지 않는다.
 
 ### 6. 비용
@@ -2640,7 +2640,7 @@ exp3 Fable max $33.25, exp3 Opus max $40.12 다(둘 다 `scan.jsonl` usage 로 �
 ### 7. 한계와 다음 작업
 
 - `_judge_incomplete` 는 매칭 소진과 judge 실패를 구분하지 못한다(D-28 한계 유지).
-- cork Fable max 는 부분 결과다. 재실행 여부는 사용자 결정이다.
+- cork Fable max 는 부분 결과다. 재실행 여부는 사용자 결정이다(2026-10-28 재실행, 44/44 스캔. D-32. 채점은 OpenAI 크레딧 소진으로 미완).
 - secondswap 의 o4-mini 값은 역사 기록용이다.
 - judge 시간이 o4-mini 의 1.9배(같은 run 기록 1건 기준, §2)라서 배치 시간을 잡을 때 반영한다. 비용은 재지 않았다.
 
@@ -2650,6 +2650,112 @@ exp3 Fable max $33.25, exp3 Opus max $40.12 다(둘 다 `scan.jsonl` usage 로 �
 
 - `tests/test_attacktrail_cli.py::test_cli_agent_unreadable_files_fail_only_that_file`: D-20 의 "읽을 수 없는 파일 하나가 프로젝트 전체를 죽이지 않는다"를 디렉터리 `Dir.sol` 로 만들었는데, D-30 이 `select_files` 에서 디렉터리를 아예 빼면서 후보가 2개가 됐다(D-30 뒤 이 시험을 안 돌렸다). 디렉터리는 그대로 두고 후보에서 빠지는지 확인하고, 읽기 실패는 `C.sol` 만 `PermissionError` 를 내는 `io.open` 으로 만든다. 기대값은 그대로 3/2/1 이다.
 - `tests/test_runner.py::test_agent_env_is_scoped`: `agent_env()` 는 D-24 별칭 `ATTACKTRAIL_ANTHROPIC_API_KEY` 를 먼저 읽는데 시험이 `ANTHROPIC_API_KEY` 만 넣어서, 별칭이 사용자 환경에 있는 PC 에서는 실제 키가 나와 떨어졌다. 실패 메시지에 그 키 값이 찍히는 문제도 있었다. 별칭을 시험값으로 넣어 별칭이 이기는 것과, 별칭을 지우면 평키를 쓰는 것을 둘 다 확인한다.
+
+## D-32. cork Fable 5.1 max 재실행, 채점은 보류 (2026-10-28)
+
+### 1. 결정
+
+사용자가 2026-10-28 에 cork 재실행을 결정했다(키 만료일에 남은 예산을 쓰기로). D-31 §5 의 "cork 스캔 파일 집합이 Fable 20/44 대 Opus 43/44 라 비교 불가" 문제를 메우기 위해서다. OpenAI 크레딧이 소진돼 채점은 `--judge mock` 으로 돌렸고, `scores.json`·리포트의 TP 18/FN 0 은 배관용 값이라 의미가 없다(D-26 mock 정의). 채점은 크레딧이 생기면 D-31 §2 의 사본 재채점 방식으로 한다(run 폴더를 `-r1` 로 복사하고 `manifest.json` 을 뺀 뒤 `eval rescore ... --judge nethermind`).
+
+### 2. 실행
+
+`cli.py run --agent attacktrail --dataset scabench --projects sherlock_cork-protocol_2025_01 --jobs 1 --judge mock --model claude-fable-5-1 --effort max --max-tokens 128000 --timeout 36000 --out runs\cork-fable-max-r2`. exp3(D-30)와 같은 모델·effort·`max_tokens` 이고 `--timeout` 만 14500 에서 36000 으로 올렸다(exp3 에서 소프트 한도로 20/44 에서 멈췄기 때문). 런처는 세션 스크래치패드의 PowerShell 스크립트이고, 키는 `ATTACKTRAIL_ANTHROPIC_API_KEY` 별칭을 `eval run` 이 읽는다(README). 실행 전 `count_tokens` 로 키가 살아 있는지 확인했다(무료).
+
+### 3. 결과 (스캔만)
+
+| 항목 | 값 |
+|---|---|
+| 시작~끝 (UTC) | 2026-10-28 01:04:49 ~ 01:47:45 (42분 56초) |
+| 스캔 | 44/44, 실패 0, 건너뜀 0 |
+| 폴백·거절 | 0 (44호출 모두 응답 model `claude-fable-5-1`, service_tier standard) |
+| 후보 | 127 (`_verify` 127행) |
+| 출력 토큰 | 합 695,410. 파일 최대 71,342(`contracts/libraries/VaultLib.sol`), 평균 15,805 |
+| 호출 시간 | 최대 867.9초(VaultLib.sol), 평균 196.1초 |
+| 입력 토큰 | 94,634. 캐시 쓰기 20,616, 캐시 읽기 206,160 |
+
+exp3 의 cork(20/44, 프로젝트 wall 65,089.7초, 스트림 끊김 3, hard deadline 1)와 달리 이번에는 44파일이 43분에 끝났다. 같은 설정에서 API 쪽 속도가 이만큼 달라질 수 있다는 기록이고 원인은 모른다. `--timeout 36000` 은 결과적으로 필요 없었지만 해는 없다.
+
+### 4. 비용
+
+손계산 $36.03(입력 94,634 × $10 + 출력 695,410 × $50 + 캐시 쓰기 20,616 × $12.50 + 캐시 읽기 206,160 × $0.25, per MTok). D-31 §5 의 추정 약 $30 보다 $6 많다. 누적 Anthropic 지출은 D-31 의 $153.80 + 이 저장소 밖 웹 플랫폼 1건 스캔(2026-10-26~27, Fable max 3파일 $6.34 + Opus 5.5 max 24파일 $24.30) $30.64 + 이번 $36.03 = $220.47 로 상한 $200 을 넘었다. 사용자가 10-28 에 키 만료 전 잔여 예산을 전부 쓰기로 결정했다. 채점기 OpenAI 비용은 0(mock).
+
+### 5. 다음 작업
+
+- OpenAI 크레딧 충전 후 사본 재채점(gpt-5-nano). 그 뒤 D-31 표 A 의 cork 행과 정답 87건 합산 recall 을 다시 계산해 Opus 우위 여부를 본다(D-33 의 5회 반복 run 10개와 같은 때 채점한다).
+- `runs/cork-fable-max-r2/manifest.json` 은 커밋 대상이고 나머지 산출물은 ignore 규칙대로 남긴다.
+
+## D-33. 4개 프로젝트 Fable 5.1 max 5회 반복, 절전 사고와 next-generation 재실행 (2026-10-28)
+
+### 1. 결정
+
+사용자가 2026-10-28 에 "Claude API 제한 없이 5번" 실행을 결정했고, 대상은 선택지 중 "4개 프로젝트 전부 x5"(secondswap·kinetiq·cork·next-generation, 정답 87건)를 골랐다. D-31 표 A 의 Fable max 수치는 secondswap 3회 평균, exp3 1회, cork 20/44 로 표본이 고르지 않았다. 같은 파일 집합을 5회 돌려 평균과 표준편차를 내고 Opus max(1회)와 비교하려는 것이다. OpenAI 크레딧이 없어 `--judge mock` 이고, gpt-5-nano 채점은 D-31 §2 의 사본 재채점 방식으로 뒤에 한다. 이 절의 수치는 스캔만의 결과다.
+
+### 2. 실행
+
+`cli.py run --agent attacktrail --dataset scabench --projects code4rena_kinetiq_2025_07,code4rena_next-generation_2025_05,code4rena_secondswap_2025_02,sherlock_cork-protocol_2025_01 --jobs 1 --judge mock --model claude-fable-5-1 --effort max --max-tokens 128000 --timeout 36000 --out runs\all4-fable-max-repN` (N = 1..5). 설정은 D-32 와 같다. `--repeat 5` 대신 run 디렉터리 5개를 따로 만든 이유는 둘이다. 사본 재채점(D-31 §2)이 run 단위로 그대로 되고, 프로세스 단위로 병렬화할 수 있다. 프로세스 5개를 90초 시차로 동시에 띄웠고(런처는 세션 스크래치패드의 `all4_fable_run.ps1`, 키는 `ATTACKTRAIL_ANTHROPIC_API_KEY` 별칭), 각 프로세스 안에서는 프로젝트 순차·파일 4워커라 동시 스트림은 최대 20이다. 20스트림에서 429 는 한 번도 없었다. 실행 전 `count_tokens` 로 키 생존을 확인했다.
+
+시간은 13:54:36 ~ 16:24:11 KST(rep5 종료)로 2시간 30분이고, 그중 70분은 아래 절전이다.
+
+### 3. 사고: Idle Timeout 절전이 진행 중 스트림 20개를 끊음
+
+14:13:10 에 PC 가 유휴 시간 초과로 Modern Standby 에 들어갔고 15:23:07 에 깼다(시스템 이벤트 로그 Kernel-Power 506/507, "Reason: Idle Timeout"). 진입 시점에 kinetiq 는 5회 모두 끝나 있었고(14:09:58 ~ 14:13:08 완료) next-generation 이 각 rep 에서 4워커로 진행 중이었다. 그래서 5 x 4 = 20 호출이 끊겼다. scan.py 는 각각 `partial: true`(출력 5~8 토큰, elapsed 약 4,200~4,400초)로 기록하고 파일별 ERROR 로 둔다(재시도 없음, D-20 설계). 결과 next-generation 은 5회 모두 4/8 파일 실패였다(rep3·rep5 는 `hardhat.config.js` 까지, 나머지는 ERC20 계열 4개).
+
+조치: 15:25 에 `keep_awake.ps1`(별도 PowerShell 프로세스, `SetThreadExecutionState(ES_CONTINUOUS|ES_SYSTEM_REQUIRED)` 를 60초마다 갱신, 5개 run 이 끝나면 해제)을 띄웠고 이후 절전은 없었다. PowerShell 5.1 은 `[uint32]0x80000000` 리터럴이 int 오버플로로 실패하므로 `[uint32]2147483648` 로 써야 한다(반환값 0x80000000 이면 적용됨). 덮개·전원 버튼 진입은 이 방법으로 못 막는다(D-29 의 10-25 정지와 같은 종류).
+
+### 4. next-generation 재실행
+
+16:23:52 ~ 16:42:38 KST 에 같은 명령으로 `--projects code4rena_next-generation_2025_05` 만, `--out runs\ng-fable-max-repN`, 5 프로세스 동시(30초 시차). 4회는 8/8 이고 ng-rep4 는 `contracts/Token.sol` 1건이 서버 쪽 연결 종료(`RemoteProtocolError: peer closed connection`, 739초)로 7/8 이다. 합성 규칙: rep N 의 next-generation 은 `ng-fable-max-repN` 을 쓰고 `all4-fable-max-repN` 의 next-generation(4/8)은 채점·집계에서 뺀다.
+
+### 5. 결과 (스캔만)
+
+rep 별 합성(secondswap·kinetiq·cork 는 all4, next-generation 은 ng):
+
+| rep | secondswap | kinetiq | cork | next-gen | 파일 합계 | 폴백 | 끊김 | 후보 | 비용(합성) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 16/16 | 17/17 | 43/44 | 8/8 | 84/85 | 1 | 1 | 254 | $62.41 |
+| 2 | 16/16 | 17/17 | 44/44 | 8/8 | 85/85 | 0 | 0 | 278 | $65.88 |
+| 3 | 16/16 | 17/17 | 44/44 | 8/8 | 85/85 | 0 | 0 | 273 | $64.51 |
+| 4 | 16/16 | 17/17 | 44/44 | 7/8 | 84/85 | 1 | 1 | 259 | $59.81 |
+| 5 | 16/16 | 17/17 | 44/44 | 8/8 | 85/85 | 2 | 0 | 266 | $63.13 |
+
+- 끊김 2건은 모두 서버가 연결을 닫은 것이다(rep1 cork `contracts/libraries/DsFlashSwap.sol` 273초, ng-rep4 `contracts/Token.sol` 739초). 절전과 무관하다.
+- 폴백 4건은 전부 `claude-opus-4-8` 이 받았다. kinetiq `src/OracleManager.sol` 이 rep1·rep4·rep5 에서 거절됐고(출력 18,543·2,712·2,392 토큰), rep5 cork `contracts/core/ModuleCore.sol` 이 거절됐다(21,959). exp3(D-30)의 같은 파일은 거절되지 않았으므로 거절은 비결정적이다. 같은 파일이 5회 중 3회 거절된 것은 AttackTrail 제품 관점에서 기록할 패턴이다(D-23 §7).
+- cork 는 출력 614,481 ~ 649,772 토큰, 파일 최대 56,722 ~ 89,633(`ModuleCore.sol`·`VaultLib.sol`), wall 2,078 ~ 2,550초로 D-32 의 r2(695,410, 71,342, 2,576초)와 같은 범위다. secondswap 출력은 175,783 ~ 218,014 로 D-29 의 3회(192,621 ~ 221,832)와 같다. 5 프로세스 동시 실행이 호출 속도를 늦추지 않았다.
+- 후보 수는 all4 의 next-generation 4/8 분(22~27)을 뺀 값이다.
+
+### 6. 비용
+
+손계산(입력 $10, 출력 $50, 캐시 쓰기 $12.50, 캐시 읽기 $0.25 per MTok) 합계 $341.12: all4 5회 $294.87 + ng 5회 $46.26. 이 중 절전으로 버린 all4 의 next-generation 5회분 $25.39 가 낭비다(입력과 성공한 4파일 출력은 과금됨). 실행 전 추정은 회당 약 $70 이었고 실제 합성 회당 $59.81 ~ $65.88 이다. 누적 Anthropic 지출은 D-32 의 $220.47 + $341.12 = $561.59. 채점기 비용 0(mock).
+
+### 7. 다음 작업
+
+- OpenAI 크레딧 충전 후 run 10개를 사본 재채점(gpt-5-nano): `all4-fable-max-rep1~5` 는 `--projects` 에서 next-generation 을 빼고, `ng-fable-max-rep1~5` 는 그대로. 그 뒤 rep 별 합성 recall 의 5회 평균·표준편차로 D-31 표 A 의 Fable max 행을 교체하고 Opus max 1회와 비교한다. `cork-fable-max-r2`(D-32)도 같은 때 채점한다.
+- `runs/all4-fable-max-rep*/manifest.json`, `runs/ng-fable-max-rep*/manifest.json` 10개는 커밋 대상이다.
+- 장시간 API 배치 런처는 keep-awake 와 함께 띄운다(README 운영 메모에 추가할 것).
+
+## D-34. 기본 모델을 Haiku 5.5 high 로, API 지출 상한 $100 (2026-10-29)
+
+### 1. 결정
+
+사용자 결정(2026-10-29): AttackTrail API 사용료를 이제부터 누적 $100 로 제한하고, 기본 모델을 Opus·Mythos 가 아닌 것 중 비용이 절반 이하이면서 실측 효율이 가장 좋았던 것으로 바꾼다. D-31 표 A(secondswap 16파일, 정답 30, gpt-5-nano 채점) 기준 후보는 Haiku 5.5 high(재현율 0.40, 회당 약 $0.05), Fable 5.1 xhigh(0.48, 약 $5.4), Sonnet 5.5 high(0.30, 약 $0.4)였고 사용자가 Haiku 5.5 high 를 골랐다. 상한은 코드 가드 + 운영 규칙(실제 호출 전 사용자 승인)으로 건다. 키는 10-28 만료 상태(count_tokens 401)라 Haiku 실호출 검증은 새 키 이후다.
+
+### 2. 바꾼 것
+
+- scan.py: `--model` 기본 `claude-haiku-5-5`, `--effort` 기본 `high`. Haiku 5.5 에는 서버 측 폴백이 없으므로(번들 claude-api 문서: `fallbacks: "default"` 는 무시되고 목록 형태는 400) `fallback_kwargs(model)` 이 Haiku 에는 `betas`·`fallbacks` 를 보내지 않고 `_run.fallbacks` 를 null 로 남긴다. 다른 모델은 D-23 그대로. 거절은 그 파일의 ERROR 로 남는다(refusal 처리 경로는 D-23 과 같다).
+- `adapters/attacktrail.py`: 모델별 단가표 `PRICES`(Fable 5.1 $10/$50, 캐시 쓰기 $12.50·읽기 $0.25; Opus 5.5 $4/$20, 읽기 $0.20; Opus 5·4.8 $5/$25, 표준 배수; Sonnet 5.5 $2/$10, 읽기 $0.20; Haiku 5.5 $0.10/$0.50, 프롬프트 100K 초과 호출은 $0.50/$2.50. 긴 프롬프트 카드의 캐시 단가는 표준 배수를 가정한 값이고 문서에는 기본 단가만 있다)로 `_usage` 행마다 비용을 계산해 `Meta.cost_usd` 에 넣는다(D-19 이후 None 이던 칸). 단가 없는 모델 행이나 CLI 행은 $0 으로 빠지고 그 수를 `Meta.error` 에 적는다(합은 하한). 모든 행이 단가 없음일 때만 None. 폴백 행은 응답 모델 단가로 전체를 매긴다(거절 시도의 입력분이 약간 과대). scan.jsonl 은 한 번만 읽어 네 usage 헬퍼에 넘긴다.
+- `runner/budget.py`: `eval run` 시작 전 장부 합계가 상한에 닿았으면 RuntimeError 로 거부하고, run 마다 `_single` 의 finally 에서 manifest 의 프로젝트를 장부에 더한다(채점이 실패해도 manifest 는 쓰이므로 지출이 빠지지 않는다). 장부 행은 API 를 실제로 쓴 프로젝트(agent_status ok, tokens_in 있음)만: cost_usd 가 있으면 그 값, 없으면 $0 에 `unpriced: true`. 제외·crashed·no_files·baseline 프로젝트는 행을 안 만든다. 상한 `ATTACKTRAIL_BUDGET_USD`(기본 100)와 장부 경로 `ATTACKTRAIL_SPEND_LEDGER`(기본 `runs/spend_ledger.jsonl`, git 밖)는 호출 때 읽는다(import 시점 고정 아님. 잘못된 값은 run 에서만 RuntimeError). 시험은 conftest 의 autouse fixture 로 임시 장부를 쓴다(처음 구현은 시험 60건이 실제 장부에 $0 행을 남겼다. 지웠다). run 도중 중단은 없다(Haiku 는 회당 센트 단위, Fable max 는 명시적 선택).
+- 시험: `tests/test_budget.py` 4건(단가표·100K 경계·장부 행 규칙과 상한·env 지연 읽기), 기존 시험의 기본값 기대치를 Haiku·high 로 갱신. scan.py selftest 140 통과, eval 시험 전체 통과. code-review(medium) 지적 8건은 모두 반영했다: 채점 실패 시 장부 누락, 단가 없는 행 하나가 run 전체를 $0 으로 만들던 것, 시험의 실제 장부 오염, import 시점의 env 고정과 파싱 오류, 지출 없는 프로젝트의 unpriced 행, 긴 프롬프트 캐시 단가 가정 표기, 파일 4회 읽기.
+
+### 3. 근거와 주의
+
+- Haiku 5.5 비용은 비웹 스캔에서 D-26 run(`cmp-haiku-5-5-d26`) 실측으로 $0.045(프롬프트 6K 토큰대, 기본 단가). `--web` 스캔은 기준 문서가 약 11만 토큰이라 두 번째 단가가 적용돼 비웹의 약 5배다.
+- Haiku 5.5 는 effort 기본이 medium 이지만 이 스캐너는 effort 를 항상 명시하므로 영향 없다. thinking 은 보내지 않는다(adaptive 기본). 128K 출력 지원이라 `--max-tokens` 범위는 그대로다.
+- 거절(cyber 분류기)은 Haiku 에서도 나며 폴백이 없으니 거절 파일은 비어 남는다. 거절률은 새 키로 실측해야 한다.
+
+### 4. 다음 작업
+
+- 새 키 발급 후 Haiku 5.5 high 로 secondswap 1회 스모크(약 $0.05): 요청 수락, 거절률, 재현율이 D-26 의 0.40 과 맞는지.
+- D-33 의 run 10개 재채점은 그대로(OpenAI 크레딧).
 
 ## 아직 안 된 것
 
@@ -2719,5 +2825,5 @@ D-20 에서 해결한 것: 호출별 timeout 과 하드 데드라인(D-19 의 �
 | effort max, 128000 실행 (D-28, D-29) | 완료했다(D-29). Fable 5.1 max 3회와 Opus 5.5 max 1회가 채점까지 끝났다. 서버가 effort `max` 와 128000 요청을 받는지는 두 모델 모두 확인됐다(D-29 §5). 결과: Fable 은 xhigh 대비 엄격 recall 0.322 에서 0.433, 비용 2.1배이고 표준편차 때문에 확정은 아니다(D-29 §4). 남은 것: 폴백이 일어났을 때 128000 이 유지되는지(폴백 0 이라 못 봄), Opus 의 128K 한도 직접 확인(최대 62,225 토큰까지만 받음), Opus 반복, 프로젝트 확장 (D-28 §11, D-29 §11) |
 | 채점 불완전을 원인별로 못 가른다 (D-28) | `judge_incomplete`(`truths_unevaluated` > 0 이고 지적 1건 이상)는 judge 호출 실패와 지적 소진을 구별하지 못한다(지적 0건 프로젝트는 D-28 후속에서 제외). 재채점이 필요한지는 `scoring_output/scorer_stdout.log` 의 오류 줄로 본다. 선택 사항이던 로그 줄 수 게이트는 하지 않았다. `compare` 도 이 표시를 경고하지 않는다 (D-28 §9, 후속 4) |
 | 모델·effort 비교의 표본 크기 (D-29) | 프로젝트 1개(secondswap, 정답 30건)에서 Fable 은 effort 당 3회, Opus·Sonnet·Haiku 는 1회다. Fable 의 xhigh 대 max 엄격 recall 차이 0.111 은 표본 표준편차(0.120, 0.084)와 같은 크기이고 Welch p 약 0.27 이라 확정이 아니다. 다음 후보는 다른 scabench 프로젝트 2~3개로 확장하거나 반복을 늘리는 것이고 사용자 결정 대기다. 폴백 시 128000 유지와 Opus 의 128K 한도 직접 확인도 못 했다. xhigh(64000)와 max(128000)는 `max_tokens` 도 달라서 effort 효과만 분리하지도 못했다(영향은 작다고 보지만 추정이다) (D-29 §4, §9, §11) |
-| exp3 재채점과 judge 모델 (D-30, D-31) | 해결(D-31). judge 는 `gpt-5-nano-2025-08-07` 로 결정했고(2026-10-25) `--judge-model` 기본값을 바꿨다. exp3 두 run 과 secondswap 12건을 재채점했다. 남은 것: cork Fable max 는 부분 결과(스캔 20/44)라 재실행 여부가 사용자 결정이다. 사본 재채점은 수정 전 kinetiq 25개(17개 + 디렉터리 8개) 스캔 결과를 그대로 쓴다 |
+| exp3 재채점과 judge 모델 (D-30, D-31) | 해결(D-31). judge 는 `gpt-5-nano-2025-08-07` 로 결정했고(2026-10-25) `--judge-model` 기본값을 바꿨다. exp3 두 run 과 secondswap 12건을 재채점했다. cork Fable max 는 D-32(2026-10-28)에서 44/44 로 재실행했고, 같은 날 D-33 에서 4개 프로젝트 전부를 5회 반복했다(run 10개). gpt-5-nano 채점만 남았다(OpenAI 크레딧 소진). 사본 재채점은 수정 전 kinetiq 25개(17개 + 디렉터리 8개) 스캔 결과를 그대로 쓴다 |
 | 빌드 산출물 폴더 이름 규칙의 범위 (D-30) | 이름만 보므로 `build`, `cache`, `out` 이 실제 소스 폴더인 저장소는 소스까지 빠진다. 29개에서는 morph-l2 `build/lint.go` 1개였고 `--web` 은 0개다. 29개 밖과 웹 대상은 검증하지 못했다. `broadcast/` 는 제외하지 않았다 |
